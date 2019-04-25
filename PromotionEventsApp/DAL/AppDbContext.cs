@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using PromotionEventsApp.Models;
 
-namespace PromotionEventsApp.Data
+namespace PromotionEventsApp.DAL
 {
-    public class AppDbContext
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
+
     {
+        private DbSet<Event> Events { get; set; }
     }
 }
