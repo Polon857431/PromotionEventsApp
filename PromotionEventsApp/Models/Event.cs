@@ -12,7 +12,7 @@ namespace PromotionEventsApp.Models
         public string Description { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public string SRC { get; set; }
+        public string Image { get; set; }
         public virtual ICollection<EventSpot> Spots { get; set; }
         public virtual ICollection<Member> Members { get; set; }
     }
