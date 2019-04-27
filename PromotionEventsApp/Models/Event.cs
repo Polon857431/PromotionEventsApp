@@ -14,6 +14,6 @@ namespace PromotionEventsApp.Models
         public DateTime EndTime { get; set; }
         public string SRC { get; set; }
         public virtual ICollection<EventSpot> Spots { get; set; }
-        public virtual IList<Member> Members { get; set; }
+        public virtual ICollection<Member> Members { get; set; }
     }
 }
