@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.ViewModels;
 using System.Threading.Tasks;
-using PromotionEventsApp.Models.Enums;
 
 namespace PromotionEventsApp.Controllers
 {
