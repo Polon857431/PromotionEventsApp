@@ -4,7 +4,7 @@ using PromotionEventsApp.Models;
 
 namespace PromotionEventsApp.DAL
 {
-    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
+    public class AppDbContext : IdentityDbContext<User, Role, int>
 
     {
         public AppDbContext(DbContextOptions options) : base(options)

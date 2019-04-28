@@ -10,6 +10,6 @@ namespace PromotionEventsApp.Models
         public Guid EventID { get; set; }
         public Event  Event{ get; set; }
         public int UserId { get; set; }
-        public AppUser AppUser { get; set; }
+        public User AppUser { get; set; }
     }
 }

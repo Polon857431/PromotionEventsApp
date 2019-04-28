@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace PromotionEventsApp.Models
 {
-    public class AppUser : IdentityUser<int>
-
+    public class Role : IdentityRole <int>
     {
     }
 }
