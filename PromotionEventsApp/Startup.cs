@@ -47,7 +47,7 @@ namespace PromotionEventsApp
             {
                 options.ValidationInterval = TimeSpan.Zero;
             });
-            services.AddIdentity<AppUser, AppRole>(opt =>
+            services.AddIdentity<User, Role>(opt =>
                 {
                     opt.Password.RequiredLength = 6;
                     opt.Password.RequireNonAlphanumeric = false;
@@ -61,14 +61,15 @@ namespace PromotionEventsApp
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc().AddJsonOptions(x => {
+            services.AddMvc().AddJsonOptions(x =>
+            {
                 x.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
 
             services.AddScoped<IEventRepository, EventRepository>();
         }
-        
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
