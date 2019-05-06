@@ -7,7 +7,7 @@ namespace PromotionEventsApp.Models
 {
     public class Member
     {
-        public Guid EventID { get; set; }
+        public int EventId { get; set; }
         public Event  Event{ get; set; }
         public int UserId { get; set; }
         public User AppUser { get; set; }
