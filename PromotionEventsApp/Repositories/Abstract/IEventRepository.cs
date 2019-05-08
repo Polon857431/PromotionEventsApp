@@ -10,8 +10,8 @@ namespace PromotionEventsApp.Repositories.Abstract
     public interface IEventRepository
     {
 
-        Task<Event> GetAsync(Guid id);
-        Task<Event> GetAsync(Guid id, params Expression<Func<Event, object>>[] includeProperties);
+        Task<Event> GetAsync(int id);
+        Task<Event> GetAsync(int id, params Expression<Func<Event, object>>[] includeProperties);
         Task<Event> GetAsync(Expression<Func<Event, bool>> predicate);
         Task<Event> GetAsync(Expression<Func<Event, bool>> predicate, params Expression<Func<Event, object>>[] includeProperties);
 
@@ -27,7 +27,7 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task CommitAsync();
 
         Task<bool> IsExistsAsync(Expression<Func<Event, bool>> predicate);
-        Task<bool> IsExistsAsync(Guid id);
+        Task<bool> IsExistsAsync(int id);
         Task<bool> AnyAsync();
 
     }

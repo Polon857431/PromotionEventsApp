@@ -27,12 +27,12 @@ namespace PromotionEventsApp.Repositories
             return query;
         }
 
-        public async Task<Event> GetAsync(Guid id)
+        public async Task<Event> GetAsync(int id)
         {
             return await GetAsync(_ => _.Id.Equals(id));
         }
 
-        public async Task<Event> GetAsync(Guid id, params Expression<Func<Event, object>>[] includeProperties)
+        public async Task<Event> GetAsync(int id, params Expression<Func<Event, object>>[] includeProperties)
         {
             return await GetAsync(_ => _.Id.Equals(id), includeProperties);
         }
@@ -97,7 +97,7 @@ namespace PromotionEventsApp.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsExistsAsync(Guid id)
+        public async Task<bool> IsExistsAsync(int id)
         {
             return await IsExistsAsync(_ => _.Id.Equals(id));
         }

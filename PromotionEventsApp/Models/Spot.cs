@@ -13,5 +13,6 @@ namespace PromotionEventsApp.Models
         public string QrCode { get; set; }
         public float Longitude { get; set; }
         public float Latitude { get; set; }
+        public ICollection<EventSpot> Events { get; set; }
     }
 }

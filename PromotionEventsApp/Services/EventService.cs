@@ -25,14 +25,14 @@ namespace PromotionEventsApp.Services
 
         }
 
-        public async Task<EventViewModel> GetEventViewModel(Guid id)
+        public async Task<EventViewModel> GetEventViewModel(int id)
         {
             var e = await _eventRepository.GetAsync(id);
 
             return new EventViewModel();
         }
 
-        public async Task UpdateEvent(Guid id, EventViewModel model)
+        public async Task UpdateEvent(int id, EventViewModel model)
         {
             Event e = await _eventRepository.GetAsync(id);
             //to do 
