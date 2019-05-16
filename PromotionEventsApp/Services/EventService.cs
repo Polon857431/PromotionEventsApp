@@ -23,32 +23,34 @@ namespace PromotionEventsApp.Services
 
         public async Task CreateEvent(EventViewModel model)
         {
-            Event e = new Event();
-            _eventRepository.Add(e);
-            await _eventRepository.CommitAsync();
+            _eventRepository.Add(_mapper.Map<EventViewModel, Event>(model));
+             await _eventRepository.CommitAsync();
 
         }
 
         public async Task<EventViewModel> GetEventViewModel(int id)
         {
             var e = await _eventRepository.GetAsync(id);
+            return _mapper.Map<Event, EventViewModel>(e);
+        }
 
-
-            return _mapper.Map<Event,EventViewModel>(e);
+        public async Task<Event> GetEvent(int id)
+        {
+            return await _eventRepository.GetAsync(id, _ => _.Spots);
         }
 
         public async Task UpdateEvent(EventViewModel model)
-        { 
-            var e = _mapper.Map<EventViewModel, Event> (model);
+        {
+            var e = _mapper.Map<EventViewModel, Event>(model);
             _eventRepository.Update(e);
-            await _eventRepository.SaveAsync();
+            await _eventRepository.CommitAsync();
 
         }
 
         public async Task AddSpot(int eventId, int spotId)
         {
             Event e = await _eventRepository.GetAsync(eventId, _ => _.Spots);
-            EventSpot es = new EventSpot(){EventId = eventId, SpotId = spotId};
+            EventSpot es = new EventSpot() { EventId = eventId, SpotId = spotId };
             e.Spots.Add(es);
             _eventRepository.Update(e);
 
