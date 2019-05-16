@@ -41,7 +41,7 @@ namespace PromotionEventsApp.Controllers
 
         #region Event Details
 
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(int id)
         {
             return View(await _eventService.GetEventViewModel(id));
         }
@@ -49,11 +49,21 @@ namespace PromotionEventsApp.Controllers
         #endregion
         #region Edit
 
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(int id)
         {
             return View(await _eventService.GetEventViewModel(id));
         }
-#endregion
+        public async Task<IActionResult> Edit(EventViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _eventService.UpdateEvent(model);
+            return RedirectToAction("Details");
+        }
+        #endregion
 
 
     }

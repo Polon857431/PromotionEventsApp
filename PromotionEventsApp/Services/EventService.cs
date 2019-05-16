@@ -4,17 +4,21 @@ using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace PromotionEventsApp.Services
 {
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
+        private readonly IMapper _mapper;
 
-        public EventService(IEventRepository eventRepository)
+        public EventService(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
+            _mapper = mapper;
         }
 
         public async Task CreateEvent(EventViewModel model)
@@ -29,28 +33,34 @@ namespace PromotionEventsApp.Services
         {
             var e = await _eventRepository.GetAsync(id);
 
-            return new EventViewModel();
+
+            return _mapper.Map<Event,EventViewModel>(e);
         }
 
-        public async Task UpdateEvent(int id, EventViewModel model)
-        {
-            Event e = await _eventRepository.GetAsync(id);
-            //to do 
+        public async Task UpdateEvent(EventViewModel model)
+        { 
+            var e = _mapper.Map<EventViewModel, Event> (model);
             _eventRepository.Update(e);
-            throw new NotImplementedException();
+            await _eventRepository.SaveAsync();
+
         }
 
-        public async Task<List<EventViewModel>> List()
+        public async Task AddSpot(int eventId, int spotId)
+        {
+            Event e = await _eventRepository.GetAsync(eventId, _ => _.Spots);
+            EventSpot es = new EventSpot(){EventId = eventId, SpotId = spotId};
+            e.Spots.Add(es);
+            _eventRepository.Update(e);
+
+        }
+
+        public async Task<List<Event>> List()
         {
             List<EventViewModel> result = new List<EventViewModel>();
-            var events = await _eventRepository.GetAllAsync();
-            foreach (var e in events)
-            {
-                result.Add(await GetEventViewModel(e.Id));
-            }
-
-            throw new NotImplementedException();
+            var list = await _eventRepository.GetAllAsync();
+            return list.ToList();
         }
+
     }
 }
 

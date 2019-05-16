@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PromotionEventsApp.Models;
 
@@ -28,6 +27,7 @@ namespace PromotionEventsApp.DAL
             builder.Entity<Event>().Property(_ => _.EndTime).IsRequired(true);
 
             #endregion
+
 
             #region Spot
 
