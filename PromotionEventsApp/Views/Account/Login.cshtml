@@ -1,7 +1,24 @@
-﻿
+﻿@model Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal.LoginModel
 @{
     ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Login</h1>
+<br />
+<div class="container">
+    <h1>Logowanie</h1>
+    <form asp-action="Login" method="post">
+        <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+        <div class="form-group">
+            <label asp-for="Email">Adres email</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="np. jankowalski@gmail.com">
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Hasło</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="np. Moje_Hasło123">
+        </div>
+        <div class="text-danger" asp-validation-summary="All"></div>
+        <button type="submit" class="btn btn-primary">Zaloguj</button>
+    </form>
+</div>
+<br /><br />
 
