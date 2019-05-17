@@ -29,6 +29,9 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task<bool> IsExistsAsync(Expression<Func<Event, bool>> predicate);
         Task<bool> IsExistsAsync(int id);
         Task<bool> AnyAsync();
+        int GetLastId();
+        Task<List<Member>> GetUserEvents(User user);
+        Task<List<Member>> GetEventMembers(int id);
 
     }
 }

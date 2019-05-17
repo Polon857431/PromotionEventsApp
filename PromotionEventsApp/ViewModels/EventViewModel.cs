@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using PromotionEventsApp.Models;
 
 namespace PromotionEventsApp.ViewModels
@@ -21,5 +22,6 @@ namespace PromotionEventsApp.ViewModels
         public string Image { get; set; }
         public List<EventSpot> Spots { get; set; }
         public List<Member> Members { get; set; }
+        public IFormFile EventImage { get; set; }
     }
 }

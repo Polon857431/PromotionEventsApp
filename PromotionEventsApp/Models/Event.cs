@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PromotionEventsApp.Models
 {
     public class Event
-    {
+    {  
         public int Id { get; set; }
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartTime { get; set; }

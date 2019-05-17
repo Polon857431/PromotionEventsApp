@@ -13,6 +13,11 @@ namespace PromotionEventsApp.Services.Abstract
         Task<EventViewModel> GetEventViewModel(int id);
         Task UpdateEvent(EventViewModel model);
         Task<List<Event>> List();
+        int GetNewId();
+        Task JoinToEvent(int eventId, User user);
+        Task<List<Event>> UserEvents(User user);
+        Task<List<User>> EventMembers(int eventId);
+
 
 
     }

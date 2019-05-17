@@ -20,7 +20,8 @@ namespace PromotionEventsApp.Repositories
             _context = context;
         }
 
-        private IQueryable<Event> Includer(IQueryable<Event> query, params Expression<Func<Event, object>>[] includeProperties)
+        private IQueryable<Event> Includer(IQueryable<Event> query,
+            params Expression<Func<Event, object>>[] includeProperties)
         {
             foreach (var includeProperty in includeProperties)
                 query = query.Include(includeProperty);
@@ -42,7 +43,8 @@ namespace PromotionEventsApp.Repositories
             return await _context.Set<Event>().FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<Event> GetAsync(Expression<Func<Event, bool>> predicate, params Expression<Func<Event, object>>[] includeProperties)
+        public async Task<Event> GetAsync(Expression<Func<Event, bool>> predicate,
+            params Expression<Func<Event, object>>[] includeProperties)
         {
             var query = Includer(_context.Set<Event>(), includeProperties);
             return await query.FirstOrDefaultAsync(predicate);
@@ -67,7 +69,8 @@ namespace PromotionEventsApp.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Event>> FindByAsync(Expression<Func<Event, bool>> predicate, params Expression<Func<Event, object>>[] includeProperties)
+        public async Task<IEnumerable<Event>> FindByAsync(Expression<Func<Event, bool>> predicate,
+            params Expression<Func<Event, object>>[] includeProperties)
         {
             var query = _context.Set<Event>().Where(predicate);
             query = Includer(query, includeProperties);
@@ -111,6 +114,22 @@ namespace PromotionEventsApp.Repositories
         {
             return await _context.Set<Event>().AnyAsync();
         }
+
+        public int GetLastId() => _context.Events.Max(_ => _.Id);
+
+        public async Task<List<Member>> GetUserEvents(User user)
+        {
+            return await _context.Members.Include(_ => _.Event).Include(_ => _.User).Where(_ => _.UserId == user.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<Member>> GetEventMembers(int eventId)
+        {
+            return await _context.Members.Include(_ => _.Event).Include(_ => _.User).Where(_ => _.EventId == eventId)
+                .ToListAsync();
+        }
+
+
     }
 }
 
