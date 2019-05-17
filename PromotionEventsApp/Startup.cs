@@ -16,6 +16,10 @@ using PromotionEventsApp.DAL;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Repositories;
 using PromotionEventsApp.Repositories.Abstract;
+using PromotionEventsApp.Services;
+using PromotionEventsApp.Services.Abstract;
+using AutoMapper;
+using PromotionEventsApp.Profiles;
 
 namespace PromotionEventsApp
 {
@@ -38,8 +42,7 @@ namespace PromotionEventsApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+           services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
@@ -66,8 +69,15 @@ namespace PromotionEventsApp
                 x.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
+            services.AddAutoMapper(
+                typeof(EventToEventViewModel).Assembly,
+                typeof(EventViewModelToEvent).Assembly);
 
-            services.AddScoped<IEventRepository, EventRepository>();
+           services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ISpotRepository, SpotRepository>();
+            services.AddScoped<IEventService, EventService>();
+          
+            //services.AddScoped<IEventRepository, EventRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
