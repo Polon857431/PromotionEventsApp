@@ -64,6 +64,14 @@ namespace PromotionEventsApp.Controllers
             return RedirectToAction("Details");
         }
         #endregion
+        #region List
+        public async Task<IActionResult> List()
+        {
+            var e = await _eventService.List();
+            return View(await _eventService.List());
+        }
+        #endregion
+
 
 
     }

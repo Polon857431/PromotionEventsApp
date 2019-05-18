@@ -19,21 +19,23 @@ namespace PromotionEventsApp.Services
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly UserManager<User> _userManager;
 
-        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, UserManager<User> userManager)
+        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
-            _userManager = userManager;
         }
 
         public async Task CreateEvent(EventViewModel model)
         {
             var e = _mapper.Map<EventViewModel, Event>(model);
             e.Id = GetNewId();
-            e.Image = UploadEventPhoto(model.EventImage, e.Id);
+            if (model.EventImage != null && model.EventImage.ContentType.Contains("image"))
+            {
+                e.Image = UploadEventPhoto(model.EventImage, e.Id);
+
+            }
             _eventRepository.Add(e);
             await _eventRepository.CommitAsync();
 
@@ -64,22 +66,21 @@ namespace PromotionEventsApp.Services
             EventSpot es = new EventSpot() { EventId = eventId, SpotId = spotId };
             e.Spots.Add(es);
             _eventRepository.Update(e);
+            await _eventRepository.CommitAsync();
 
         }
 
         public async Task<List<Event>> List()
         {
-            List<EventViewModel> result = new List<EventViewModel>();
             var list = await _eventRepository.GetAllAsync();
             return list.ToList();
         }
 
         public string UploadEventPhoto(IFormFile formFile, int eventId)
         {
-            string newPath = Path.Combine(_hostingEnvironment.WebRootPath, "Files", eventId.ToString());
+            string newPath = Path.Combine(_hostingEnvironment.WebRootPath, "Events", eventId.ToString());
             if (!Directory.Exists(newPath))
                 Directory.CreateDirectory(newPath);
-
 
             FileInfo uploadedFileInfo = new FileInfo(formFile.FileName);
             var fileName = $"{Guid.NewGuid()}{uploadedFileInfo.Extension}";

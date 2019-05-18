@@ -1,0 +1,54 @@
+﻿@model IEnumerable<PromotionEventsApp.Models.Event>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<p>
+    <a class="btn btn-outline-success" asp-action="CreateEvent">Create New Event</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th colspan="7">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+           
+                    
+                </td>
+           
+
+
+            </tr>
+            <tr>
+                <td>
+                   <strong>Start: </strong> @item.StartTime.ToShortDateString()
+                </td>
+                <td>
+                   <strong>Zakończenie: </strong> @item.EndTime.ToShortDateString()
+                </td>
+
+                <td class="text-right">
+                    <a class="btn btn-outline-info">Detais</a>
+                    <a class="btn btn-outline-warning">Edit</a>
+                    <a class="btn btn-outline-danger">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
