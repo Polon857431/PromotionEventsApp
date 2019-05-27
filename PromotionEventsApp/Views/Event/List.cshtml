@@ -4,57 +4,63 @@
     ViewData["Title"] = "List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
-
-<p>
-    <a class="btn btn-outline-success" asp-action="CreateEvent">Create New Event</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th colspan="12">
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-
-
-
-
-        </tr>
-    </thead>
-    <tbody>
+<div class="container">
+    <div class="card-header"> <h3>Lista wydarzeń</h3></div>
+    <div class="card-body">
+        <p>
+            <a class="btn btn-outline-success" asp-action="CreateEvent"><i class="fas fa-plus"></i> Dodaj nowe wydarzenie</a>
+        </p>
+        @if (Model.Count() == 0)
+        {
+            <div class="row">
+                <div class="col">
+                    <strong>Brak wydarzeń</strong>
+                </div>
+            </div>
+        }
         @foreach (var item in Model)
         {
-            <tr onclick="show(@item.Id)">
-                <td colspan="10">
-                    @Html.DisplayFor(modelItem => item.Name)
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <strong>Nazwa: @item.Name</strong>
+                        </div>
+                        <div class="col text-right">
+                            <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="@Html.Raw("#collapse"+item.Id)" aria-expanded="false">
+                                <strong>Rozwiń/Zwiń</strong>
+                                <i class="fas fa-chevron-circle-down expand_caret"></i>
+                            </a>
 
+                        </div>
 
-                </td>
-                <td colspan="2">
-                    <span class="float-right"> <i class="fas fa-angle-double-down"></i></span>
-                </td>
+                    </div>
+                    <p></p>
+                    <div class="collapse" id="@Html.Raw("collapse"+item.Id)">
+                        <div class="row" id="">
+                            <div class="col">
+                                <strong>Początek wydarzenia: </strong> @item.StartTime.ToShortDateString()
+                            </div>
+                            <div class="col">
+                                <strong>Zakończenie wydarzenia: </strong> @item.EndTime.ToShortDateString()
+                            </div>
 
+                            <div class="col text-right">
+                                <a asp-action="Details" class="btn btn-outline-info"><i class="fas fa-info"></i> <strong>Szczegóły</strong></a>
+                                <a asp-action="Edit" class="btn btn-outline-warning"><i class="fas fa-edit"></i> <strong>Edytuj</strong></a>
+                                <a asp-action="Delete" class="btn btn-outline-danger"><i class="fas fa-trash"></i> <strong>Usuń</strong></a>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
 
-
-            </tr>
-            <tr id="tr@(item.Id)" style="display: none">
-                <td colspan="4">
-                    <strong>Start: </strong> @item.StartTime.ToShortDateString()
-                </td>
-                <td colspan="4">
-                    <strong>End: </strong> @item.EndTime.ToShortDateString()
-                </td>
-
-                <td colspan="4 " class="text-right">
-                    <a class="btn btn-outline-info">Details</a>
-                    <a class="btn btn-outline-warning">Edit</a>
-                    <a class="btn btn-outline-danger">Remove</a>
-                </td>
-            </tr>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
 
 @section scripts{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
