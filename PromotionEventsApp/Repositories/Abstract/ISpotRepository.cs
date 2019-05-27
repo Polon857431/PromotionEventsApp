@@ -31,5 +31,7 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task<bool> IsExistsAsync(int id);
         Task<bool> AnyAsync();
 
+        int GetLastId();
+
     }
 }

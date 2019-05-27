@@ -113,5 +113,7 @@ namespace PromotionEventsApp.Repositories
         {
             return await _context.Set<Spot>().AnyAsync();
         }
+        public int GetLastId() => _context.Events.Max(_ => _.Id);
+
     }
 }

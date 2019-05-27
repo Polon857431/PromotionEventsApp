@@ -129,7 +129,10 @@ namespace PromotionEventsApp.Repositories
                 .ToListAsync();
         }
 
-
+        public async Task<Member> GetMember(int eventId, User user)
+        {
+            return await _context.Members.SingleAsync(_ => _.EventId == eventId && _.UserId == user.Id);
+        }
     }
 }
 
