@@ -42,7 +42,7 @@ namespace PromotionEventsApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-           services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
@@ -73,7 +73,7 @@ namespace PromotionEventsApp
                 typeof(EventToEventViewModel).Assembly,
                 typeof(EventViewModelToEvent).Assembly);
 
-           services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ISpotRepository, SpotRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<ISpotService, SpotService>();

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 
@@ -11,10 +13,12 @@ namespace PromotionEventsApp.Controllers
     public class EventController : Controller
     {
         private readonly IEventService _eventService;
+        private readonly UserManager<User> _userManager;
 
-        public EventController(IEventService eventService)
+        public EventController(IEventService eventService, UserManager<User> userManager)
         {
             _eventService = eventService;
+            _userManager = userManager;
         }
 
         #region CreateEvent
@@ -71,6 +75,13 @@ namespace PromotionEventsApp.Controllers
             return View(await _eventService.List());
         }
         #endregion
+
+        public async Task<IActionResult> JoinToEvent(int eventId)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _eventService.JoinToEvent(eventId, user);
+            return Json(new {success = true});
+        }
 
 
 
