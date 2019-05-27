@@ -20,8 +20,8 @@ namespace PromotionEventsApp.ViewModels
         [Required]
         public DateTime EndTime { get; set; }
         public string Image { get; set; }
-        public List<EventSpot> Spots { get; set; }
-        public List<Member> Members { get; set; }
+        public List<Spot> Spots { get; set; }
+        public List<User> Members { get; set; }
         public IFormFile EventImage { get; set; }
     }
 }

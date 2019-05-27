@@ -8,8 +8,9 @@ namespace PromotionEventsApp.ViewModels
 {
     public class UserEventsViewModel
     {
-        public Event Event { get; set; }
-        public List<Spot> EventSpots { get; set; }
+        public EventViewModel Event { get; set; }
+        public List<Spot> UserSpots { get; set; }
         public int Points { get; set; }
+        public User User { get; set; }
     }
 }
