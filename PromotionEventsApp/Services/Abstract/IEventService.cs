@@ -15,8 +15,11 @@ namespace PromotionEventsApp.Services.Abstract
         Task<List<Event>> List();
         int GetNewId();
         Task JoinToEvent(int eventId, User user);
-        Task<List<Event>> UserEvents(User user);
+        Task LeaveEvent(int eventId, User user);
+        Task<List<UserEventsViewModel>> UserEvents(User user);
         Task<List<User>> EventMembers(int eventId);
+        
+
 
 
 
