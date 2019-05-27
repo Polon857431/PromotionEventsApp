@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Repositories.Abstract;
 using PromotionEventsApp.Services.Abstract;
@@ -12,25 +13,33 @@ namespace PromotionEventsApp.Services
     public class SpotService : ISpotService
     {
         private readonly ISpotRepository _spotRepository;
+        private readonly IMapper _mapper;
 
-        public SpotService(ISpotRepository spotRepository)
+        public SpotService(ISpotRepository spotRepository, IMapper mapper)
         {
             _spotRepository = spotRepository;
+            _mapper = mapper;
         }
 
         public async Task AddSpot(SpotViewModel model)
         {
-            throw new NotImplementedException();
+            var s = _mapper.Map<SpotViewModel, Spot>(model);
+            s.Id = _spotRepository.GetLastId() + 1;
+            _spotRepository.Add(s);
+            await _spotRepository.CommitAsync();
         }
 
         public async Task UpdateSpot(SpotViewModel model)
         {
-            throw new NotImplementedException();
+            var s = _mapper.Map<SpotViewModel, Spot>(model);
+            _spotRepository.Update(s);
+            await _spotRepository.CommitAsync();
         }
 
         public async Task<List<Spot>> List()
         {
-            throw new NotImplementedException();
+            var result = await _spotRepository.GetAllAsync();
+            return result.ToList();
         }
 
         public async Task<List<Spot>> UserSpots(User user)
