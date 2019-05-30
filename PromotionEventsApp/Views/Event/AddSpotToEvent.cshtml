@@ -1,0 +1,62 @@
+﻿@model PromotionEventsApp.ViewModels.AddSpotToEventViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="card-header">
+    ]
+    <h2>Zarządzaj Punktami</h2>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <h5>
+                <b><i class="fas fa-users"></i> event sports</b>
+                <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseEventSpotListList" aria-expanded="false">
+                    Rozwiń / zwiń
+                    <i class="fas fa-chevron-circle-down expand_caret"></i>
+                </a>
+            </h5>
+            <div class="collapse" id="collapseMemberList">
+                @foreach (var element in Model.EventSpots)
+                {
+                    <div class="row" id="@element.Id">
+                        <div class="col-6">
+                            @element.Name
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-danger" onclick=""> Usuń Punkt</button>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h5>
+                <b><i class="fas fa-map-marker-alt"></i>Punkty</b>
+                <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseAvailableSpotsList" aria-expanded="false">
+                    Rozwiń / zwiń
+                    <i class="fas fa-chevron-circle-down expand_caret"></i>
+                </a>
+            </h5>
+            <div class="collapse" id="collapseAvailableSpotsList">
+                @foreach (var element in Model.AvailableSpots)
+                {
+                    <div class="row" id="@element.Id">
+                        <div class="col-6">
+                            @element.Name
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-outline-success" onclick=""> Dodaj Punkt</button>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -14,11 +14,13 @@ namespace PromotionEventsApp.Services
     {
         private readonly ISpotRepository _spotRepository;
         private readonly IMapper _mapper;
+        private readonly IEventService _eventService;
 
-        public SpotService(ISpotRepository spotRepository, IMapper mapper)
+        public SpotService(ISpotRepository spotRepository, IMapper mapper, IEventService eventService)
         {
             _spotRepository = spotRepository;
             _mapper = mapper;
+            _eventService = eventService;
         }
 
         public async Task AddSpot(SpotViewModel model)
@@ -60,6 +62,20 @@ namespace PromotionEventsApp.Services
         public async Task DeleteSpot(SpotViewModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<AddSpotToEventViewModel> GetAddSpotToEventViewModel(int eventId)
+        {
+            List<Spot> availableSpots = await _spotRepository.GetAllAsync() as List<Spot>;
+   
+            var eventSpots = await EventSpots(eventId);
+            return new AddSpotToEventViewModel()
+            {
+                EventId = eventId,
+                EventSpots = eventSpots,
+                AvailableSpots = (availableSpots ?? throw new InvalidOperationException()).Except(eventSpots).ToList()
+            };
+
         }
     }
 }

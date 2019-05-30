@@ -14,11 +14,14 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
+        private readonly ISpotService _spotService;
+        
 
-        public EventController(IEventService eventService, UserManager<User> userManager)
+        public EventController(IEventService eventService, UserManager<User> userManager, ISpotService spotService)
         {
             _eventService = eventService;
             _userManager = userManager;
+            _spotService = spotService;
         }
 
         #region CreateEvent
@@ -82,6 +85,16 @@ namespace PromotionEventsApp.Controllers
             await _eventService.JoinToEvent(eventId, user);
             return Json(new {success = true});
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddSpotToEvent(int eventId)
+        {
+            return View(await _spotService.GetAddSpotToEventViewModel(eventId));
+        }
+        
+
+
+        
 
 
 

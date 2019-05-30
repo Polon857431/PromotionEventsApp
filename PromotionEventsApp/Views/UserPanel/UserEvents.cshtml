@@ -1,0 +1,64 @@
+﻿@model List<PromotionEventsApp.ViewModels.UserEventsViewModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="card-header">
+    <h3><strong>Moje wydarzenia</strong></h3>
+</div>
+
+<div class="card-body ">
+    <div class="row">
+        <div class="col-3">
+            <strong>Suma Twoich punktów</strong>
+        </div>
+        <div class="col-9">
+            <strong>@Model.Sum(_ => _.Points)</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <strong>Twój Ranking</strong>
+        </div>
+        <div class="col-9">
+            <strong>//todo</strong>
+        </div>
+    </div>
+
+    @foreach (var element in Model)
+    {
+        <div class="row">
+            <div class="col">
+                <strong>Nazwa wydarzenia: @element.Event.Name</strong>
+            </div>
+
+            <div class="col text-right">
+                <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="@Html.Raw("#collapse"+element.Event.Id)" aria-expanded="false">
+                    <strong>Rozwiń/Zwiń</strong>
+                    <i class="fas fa-chevron-circle-down expand_caret"></i>
+                </a>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="collapse" id="@Html.Raw("collapse"+element.Event.Id)">
+                <div class="row" id="">
+                    <div class="col">
+                        <strong>Liczba punktów: </strong> @element.Points;
+                    </div>
+                    <div class="col">
+                        Odwiedziłeś @element.UserSpots.Count/@element.Event.Spots.Count
+                    </div>
+
+                    <div class="col text-right">
+                        <a asp-action="Details" asp-controller="Event" asp-route-id="@element.Event.Id" class="btn btn-outline-info"><i class="fas fa-info"></i> <strong>Szczegóły</strong></a>
+
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    }
+</div>

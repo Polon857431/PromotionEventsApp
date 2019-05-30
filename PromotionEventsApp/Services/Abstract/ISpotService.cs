@@ -16,5 +16,6 @@ namespace PromotionEventsApp.Services.Abstract
         Task<List<Spot>> EventSpots(int eventId);
         Task EditSpot(SpotViewModel model);
         Task DeleteSpot(SpotViewModel model);
+        Task<AddSpotToEventViewModel> GetAddSpotToEventViewModel(int eventId);
     }
 }
