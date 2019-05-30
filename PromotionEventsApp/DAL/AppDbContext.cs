@@ -15,6 +15,7 @@ namespace PromotionEventsApp.DAL
         public DbSet<Member> Members { get; set; }
         public DbSet<Spot> Spots { get; set; }
         public DbSet<EventSpot> EventSpots { get; set; }
+        public DbSet<VisitedSpot> UserSpots { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,6 +68,21 @@ namespace PromotionEventsApp.DAL
                 .HasForeignKey(_ => _.SpotId).IsRequired(true);
             #endregion
 
+
+            #region ManyToManyRelationships Spot - User
+
+            builder.Entity<VisitedSpot>().HasKey(_ => new { _.UserId, _.SpotId });
+
+            builder.Entity<VisitedSpot>()
+                .HasOne<User>(_ => _.User)
+                .WithMany(u => u.Spots)
+                .HasForeignKey(_ => _.EventId).IsRequired(true);
+
+            builder.Entity<VisitedSpot>()
+                .HasOne<Spot>(_ => _.Spot)
+                .WithMany(s => s.Visitors)
+                .HasForeignKey(_ => _.SpotId).IsRequired(true);
+            #endregion
 
 
 
