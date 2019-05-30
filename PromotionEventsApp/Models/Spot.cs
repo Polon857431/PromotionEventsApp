@@ -11,5 +11,6 @@ namespace PromotionEventsApp.Models
         public float Longitude { get; set; }
         public float Latitude { get; set; }
         public ICollection<EventSpot> Events { get; set; }
+        public ICollection<VisitedSpot> Visitors { get; set; }
     }
 }
