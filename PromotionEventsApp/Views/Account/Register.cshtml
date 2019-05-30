@@ -6,33 +6,84 @@
 
 <br />
 <div class="container">
-    <h1>Rejestracja</h1>
-    <form asp-action="Login" method="post">
-        <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
-        <div class="form-group">
-            <label asp-for="FirstName">Imię</label>
-            <input asp-for="FirstName" class="form-control" placeholder="np. Jan" />
-        </div>
-        <div class="form-group">
-            <label asp-for="LastName">Nazwisko</label>
-            <input asp-for="LastName" class="form-control" placeholder="np. Kowalski">
-        </div>
-   
-        <div class="form-group">
-            <label asp-for="Email">Adres email</label>
-            <input asp-for="Email" type="email" class="form-control" placeholder="np. jankowalski@gmail.com">
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Hasło</label>
-            <input asp-for="Password" type="password" class="form-control" placeholder="np. Moje_Hasło123">
-        </div>
-        <div class="form-group">
-            <label asp-for="PasswordRepeat">Potwórz hasło</label>
-            <input asp-for="PasswordRepeat" class="form-control" placeholder="np. Moje_Hasło123" />
-        </div>
-        <div class="text-danger" asp-validation-summary="All"></div>
-        <button type="submit" class="btn btn-primary">Zarejestruj</button>
-    </form>
-</div>
-<br /><br />
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6  text-center border border-primary">
+            <p></p>
+            <h2>Rejestracja</h2>
 
+            <hr/>
+            <form asp-action="Login" method="post">
+                <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl"/>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong><label asp-for="FirstName">Imię</label></strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="FirstName" class="form-control" placeholder="np. Jan"/>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong><label asp-for="LastName">Nazwisko</label></strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="LastName" class="form-control" placeholder="np. Kowalski"/>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong><label asp-for="Email">Adres email</label></strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="Email" class="form-control" placeholder="np. jan.kowalski@gmail.com"/>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong><label asp-for="Password">Hasło</label></strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="Password" type="password" class="form-control" placeholder="np. Moje_Hasło123">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong><label asp-for="PasswordRepeat">Powtórz hasło</label></strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="PasswordRepeat" type="password" class="form-control" placeholder="np. Moje_Hasło123">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <div class="row">
+                    <div class="col text-right">
+                        <button type="submit" class="btn btn-primary">Zarejestruj</button>
+                    </div>
+                </div>
+
+                <br/>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+</div>
