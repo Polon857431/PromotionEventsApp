@@ -114,6 +114,9 @@ namespace PromotionEventsApp.Repositories
             return await _context.Set<Spot>().AnyAsync();
         }
         public int GetLastId() => _context.Events.Max(_ => _.Id);
-
+        public async Task<List<VisitedSpot>> GetUserSpots(User user)
+        {
+            return await _context.UserSpots.Where(_ => _.UserId == user.Id).ToListAsync();
+        }
     }
 }

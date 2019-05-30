@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using AutoMapper;
 using PromotionEventsApp.Models;
@@ -14,13 +15,14 @@ namespace PromotionEventsApp.Services
     {
         private readonly ISpotRepository _spotRepository;
         private readonly IMapper _mapper;
-        private readonly IEventService _eventService;
 
-        public SpotService(ISpotRepository spotRepository, IMapper mapper, IEventService eventService)
+        private readonly IEventRepository _eventRepository;
+
+        public SpotService(ISpotRepository spotRepository, IMapper mapper, IEventService eventService, IEventRepository eventRepository)
         {
             _spotRepository = spotRepository;
             _mapper = mapper;
-            _eventService = eventService;
+            _eventRepository = eventRepository;
         }
 
         public async Task AddSpot(SpotViewModel model)
@@ -46,22 +48,27 @@ namespace PromotionEventsApp.Services
 
         public async Task<List<Spot>> UserSpots(User user)
         {
-            throw new NotImplementedException();
+            var result =await _spotRepository.GetUserSpots(user);
+            return result.Select(_ => _.Spot).ToList();
+
         }
 
         public async Task<List<Spot>> EventSpots(int eventId)
         {
-            throw new NotImplementedException();
+            var result = await _eventRepository.GetEventSpots(eventId);
+            return result.Select(_ => _.Spot).ToList();
         }
 
         public async Task EditSpot(SpotViewModel model)
         {
-            throw new NotImplementedException();
+            _spotRepository.Update(_mapper.Map<SpotViewModel, Spot>(model));
+            await _spotRepository.CommitAsync();
         }
 
         public async Task DeleteSpot(SpotViewModel model)
         {
-            throw new NotImplementedException();
+            _spotRepository.Delete(_mapper.Map<SpotViewModel, Spot>(model));
+            await _spotRepository.CommitAsync();
         }
 
         public async Task<AddSpotToEventViewModel> GetAddSpotToEventViewModel(int eventId)

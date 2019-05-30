@@ -33,5 +33,7 @@ namespace PromotionEventsApp.Repositories.Abstract
 
         int GetLastId();
 
+        Task<List<VisitedSpot>> GetUserSpots(User user);
+
     }
 }

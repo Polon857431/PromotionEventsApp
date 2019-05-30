@@ -133,6 +133,11 @@ namespace PromotionEventsApp.Repositories
         {
             return await _context.Members.SingleAsync(_ => _.EventId == eventId && _.UserId == user.Id);
         }
+
+        public async Task<List<EventSpot>> GetEventSpots(int eventId)
+        {
+            return await _context.EventSpots.Where(_ => _.EventId == eventId).ToListAsync();
+        }
     }
 }
 

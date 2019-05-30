@@ -13,13 +13,17 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task<Event> GetAsync(int id);
         Task<Event> GetAsync(int id, params Expression<Func<Event, object>>[] includeProperties);
         Task<Event> GetAsync(Expression<Func<Event, bool>> predicate);
-        Task<Event> GetAsync(Expression<Func<Event, bool>> predicate, params Expression<Func<Event, object>>[] includeProperties);
+
+        Task<Event> GetAsync(Expression<Func<Event, bool>> predicate,
+            params Expression<Func<Event, object>>[] includeProperties);
 
         Task<IEnumerable<Event>> GetAllAsync();
         Task<IEnumerable<Event>> GetAllAsync(params Expression<Func<Event, object>>[] includeProperties);
 
         Task<IEnumerable<Event>> FindByAsync(Expression<Func<Event, bool>> predicate);
-        Task<IEnumerable<Event>> FindByAsync(Expression<Func<Event, bool>> predicate, params Expression<Func<Event, object>>[] includeProperties);
+
+        Task<IEnumerable<Event>> FindByAsync(Expression<Func<Event, bool>> predicate,
+            params Expression<Func<Event, object>>[] includeProperties);
 
         void Add(Event e);
         void Update(Event e);
@@ -33,6 +37,6 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task<List<Member>> GetUserEvents(User user);
         Task<List<Member>> GetEventMembers(int id);
         Task<Member> GetMember(int eventId, User user);
-
+        Task<List<EventSpot>> GetEventSpots(int eventId);
     }
 }
