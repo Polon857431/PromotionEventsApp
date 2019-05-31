@@ -38,5 +38,6 @@ namespace PromotionEventsApp.Repositories.Abstract
         Task<List<Member>> GetEventMembers(int id);
         Task<Member> GetMember(int eventId, User user);
         Task<List<EventSpot>> GetEventSpots(int eventId);
+
     }
 }

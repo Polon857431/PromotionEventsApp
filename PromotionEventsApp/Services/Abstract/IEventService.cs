@@ -18,7 +18,8 @@ namespace PromotionEventsApp.Services.Abstract
         Task LeaveEvent(int eventId, User user);
         Task<List<UserEventsViewModel>> UserEvents(User user);
         Task<List<User>> EventMembers(int eventId);
-        
+        Task<List<Event>> GetClosestEvents(int count);
+
 
 
 

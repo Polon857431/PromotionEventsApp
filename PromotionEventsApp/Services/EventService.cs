@@ -131,7 +131,11 @@ namespace PromotionEventsApp.Services
             return e.Select(_ => _.User).ToList();
         }
 
-
+        public async Task<List<Event>> GetClosestEvents(int count)
+        {
+            var result = await _eventRepository.GetAllAsync(_ => _.StartTime > DateTime.Now);
+            return result.OrderBy(_ => _.StartTime).Take(count).ToList();
+        }
 
 
         public async Task JoinToEvent(int eventId, User user)
