@@ -7,6 +7,6 @@ namespace PromotionEventsApp.Helpers
 {
     public class QrGenerator
     {
-        //static 
+      
     }
 }

@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IEventService _eventService;
+
+        public HomeController(IEventService eventService)
         {
+            _eventService = eventService;
+        }
+
+        public async Task<IActionResult> Index()
+        {   
+
+            
             return View();
         }
 
