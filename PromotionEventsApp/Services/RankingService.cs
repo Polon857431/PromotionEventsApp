@@ -40,20 +40,41 @@ namespace PromotionEventsApp.Services
 
         public async Task<List<RankViewModel>> EventRank(int eventId)
         {
-            throw new NotImplementedException();
+            var result = new List<RankViewModel>();
+            var res = await _rankRepository.GetAllAsync(_ => _.User);
+
+            var visitedSpots = res.Where(_ => _.EventId == eventId).ToList();
+            foreach (var element in visitedSpots)
+            {
+                if (!result.Exists(_ => _.User.Id == element.UserId))
+                {
+                    result.Add(new RankViewModel
+                    {
+                        Points = visitedSpots.Where(_ => _.UserId == element.UserId).ToList().Sum(_ => _.Value),
+                        User = element.User
+                    });
+                }
+            }
+
+            return result.OrderBy(_ => _.Points).ToList();
         }
 
         public async Task<RankViewModel> UserGlobalRank(User user)
         {
             var res = await GlobalRanking();
-            var result = res.SingleOrDefault(_ => _.User.Id == user.Id) ?? throw new ArgumentNullException("res.SingleOrDefault(_ => _.User.Id == user.Id)");
+            var result = res.SingleOrDefault(_ => _.User.Id == user.Id) ??
+                         throw new ArgumentNullException("res.SingleOrDefault(_ => _.User.Id == user.Id)");
             result.Id = res.IndexOf(result);
             return result;
         }
 
         public async Task<RankViewModel> UserEventRank(User user, int eventId)
         {
-            throw new NotImplementedException();
+            var res = await EventRank(eventId);
+            var result = res.SingleOrDefault(_ => _.User.Id == user.Id) ??
+                         throw new ArgumentNullException("res.SingleOrDefault(_ => _.User.Id == user.Id)");
+            result.Id = res.IndexOf(result);
+            return result;
         }
     }
 }
