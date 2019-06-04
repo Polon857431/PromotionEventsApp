@@ -19,6 +19,7 @@ using PromotionEventsApp.Repositories.Abstract;
 using PromotionEventsApp.Services;
 using PromotionEventsApp.Services.Abstract;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Storage;
 using PromotionEventsApp.Profiles;
 
 namespace PromotionEventsApp
@@ -77,6 +78,8 @@ namespace PromotionEventsApp
             services.AddScoped<ISpotRepository, SpotRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<ISpotService, SpotService>();
+            services.AddScoped<IRankRepository, RankRepository>();
+            services.AddScoped<IRankingService, RankingService>();
 
             //services.AddScoped<IEventRepository, EventRepository>();
         }
