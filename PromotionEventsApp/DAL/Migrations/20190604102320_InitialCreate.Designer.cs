@@ -10,8 +10,8 @@ using PromotionEventsApp.DAL;
 namespace PromotionEventsApp.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190530232533_VisitedPoint")]
-    partial class VisitedPoint
+    [Migration("20190604102320_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
