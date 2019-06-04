@@ -19,6 +19,7 @@ namespace PromotionEventsApp.Services.Abstract
         Task<List<UserEventsViewModel>> UserEvents(User user);
         Task<List<User>> EventMembers(int eventId);
         Task<List<Event>> GetClosestEvents(int count);
+        Task<List<Event>> GetActualEvents();
 
 
 
