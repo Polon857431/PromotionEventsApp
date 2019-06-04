@@ -15,5 +15,8 @@ namespace PromotionEventsApp.Models
         public string Image { get; set; }
         public virtual ICollection<EventSpot> Spots { get; set; }
         public virtual ICollection<Member> Members { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string Apartment { get; set; }
     }
 }
