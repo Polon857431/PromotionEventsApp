@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PromotionEventsApp.Services
 {
@@ -135,8 +136,9 @@ namespace PromotionEventsApp.Services
 
         public async Task<List<Event>> GetClosestEvents(int count)
         {
-            var result = await _eventRepository.FindByAsync(_ => _.StartTime > DateTime.Now);
-            return result.OrderBy(_ => _.StartTime).Take(count).ToList();
+            var result = await _eventRepository.GetAllAsync();
+            return result.Where(_ => _.StartTime > DateTime.Now).OrderBy(_=>_.StartTime).Take(count).ToList();
+           
         }
 
         public async Task<List<Event>> GetActualEvents()

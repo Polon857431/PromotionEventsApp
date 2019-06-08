@@ -53,7 +53,8 @@ namespace PromotionEventsApp.Repositories
         public async Task<IEnumerable<Event>> GetAllAsync()
         {
             IQueryable<Event> query = _context.Set<Event>();
-            return await query.ToListAsync();
+            var res = await query.ToListAsync();
+            return res;
         }
 
         public async Task<IEnumerable<Event>> GetAllAsync(params Expression<Func<Event, object>>[] includeProperties)
