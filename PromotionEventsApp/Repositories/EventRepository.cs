@@ -115,7 +115,17 @@ namespace PromotionEventsApp.Repositories
             return await _context.Set<Event>().AnyAsync();
         }
 
-        public int GetLastId() => _context.Events.Max(_ => _.Id);
+        public int GetLastId()
+        {
+            if (_context.Events.Count() != 0)
+            {
+                return _context.Events.Max(_ => _.Id);
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         public async Task<List<Member>> GetUserEvents(User user)
         {
@@ -140,4 +150,3 @@ namespace PromotionEventsApp.Repositories
         }
     }
 }
-

@@ -18,14 +18,15 @@ namespace PromotionEventsApp.Services
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly ISpotService _spotService;
+        private readonly ISpotRepository _spotRepository;
 
-        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotService spotService)
+        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotRepository spotRepository)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
-            _spotService = spotService;
+            _spotRepository = spotRepository;
+           
         }
 
         public async Task CreateEvent(EventViewModel model)
@@ -107,14 +108,15 @@ namespace PromotionEventsApp.Services
 
             foreach (var element in e)
             {
+
                 var el = new UserEventsViewModel
                 {
                     Event = _mapper.Map<Event, EventViewModel>(element.Event),
                     User = user,
-                    UserSpots = await _spotService.UserSpots(user)
+                   // UserSpots = 
                 };
 
-                el.Event.Spots = await _spotService.EventSpots(element.EventId);
+             //   el.Event.Spots = await .EventSpots(element.EventId);
 
 
                 result.Add(el);
@@ -133,13 +135,13 @@ namespace PromotionEventsApp.Services
 
         public async Task<List<Event>> GetClosestEvents(int count)
         {
-            var result = await _eventRepository.GetAllAsync(_ => _.StartTime > DateTime.Now);
+            var result = await _eventRepository.FindByAsync(_ => _.StartTime > DateTime.Now);
             return result.OrderBy(_ => _.StartTime).Take(count).ToList();
         }
 
         public async Task<List<Event>> GetActualEvents()
         {
-            var result = await _eventRepository.GetAllAsync(
+            var result = await _eventRepository.FindByAsync(
                 _ => _.StartTime < DateTime.Now && _.EndTime > DateTime.Now);
 
             return result.ToList();
