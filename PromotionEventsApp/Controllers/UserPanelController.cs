@@ -33,25 +33,30 @@ namespace PromotionEventsApp.Controllers
             return View(await _userManager.FindByNameAsync(User.Identity.Name));
         }
 
+        #region ChangePerosnalData
+        [HttpGet]
         public async Task<IActionResult> ChangePersonalData()
         {
-            throw new System.NotImplementedException();
+            return View(_userService.GetPersonalDataViewModel(await _userManager.FindByNameAsync(User.Identity.Name)));
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangePersonalData(UserPersonalDataViewModel model)
         {
-            throw new System.NotImplementedException();
-        }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
-        {
-            throw new System.NotImplementedException();
+            await _userService.ChangePersonalData(model, await _userManager.FindByNameAsync(User.Identity.Name));
+            return RedirectToAction("Index");
         }
+        #endregion
 
+
+        #region ChangeEmail
         [HttpPost]
-        public async Task<IActionResult> ChangePasswoeed(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             throw new System.NotImplementedException();
         }
@@ -59,6 +64,13 @@ namespace PromotionEventsApp.Controllers
 
 
         public IActionResult ChangeEmail()
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
             throw new System.NotImplementedException();
         }
