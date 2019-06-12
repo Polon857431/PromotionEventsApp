@@ -7,6 +7,9 @@ namespace PromotionEventsApp.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string Number { get; set; }
         public ICollection<Member> Events { get; set; }
         public ICollection<VisitedSpot> Spots { get; set; }
     }
