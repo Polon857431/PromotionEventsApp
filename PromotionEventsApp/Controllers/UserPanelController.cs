@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
+using PromotionEventsApp.ViewModels;
 
 namespace PromotionEventsApp.Controllers
 {
@@ -30,10 +31,30 @@ namespace PromotionEventsApp.Controllers
             return View(await _userManager.FindByNameAsync(User.Identity.Name));
         }
 
-        public IActionResult ChangePersonalData()
+        public async Task<IActionResult> ChangePersonalData()
         {
             throw new System.NotImplementedException();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePersonalData(UserPersonalDataViewModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePasswoeed(ChangePasswordViewModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
 
         public IActionResult ChangeEmail()
         {
