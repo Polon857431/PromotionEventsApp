@@ -11,11 +11,13 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
 
-        public UserPanelController(IEventService eventService, UserManager<User> userManager)
+        public UserPanelController(IEventService eventService, UserManager<User> userManager, IUserService userService)
         {
             _eventService = eventService;
             _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task<IActionResult> UserEvents()
