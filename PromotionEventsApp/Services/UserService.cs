@@ -27,6 +27,9 @@ namespace PromotionEventsApp.Services
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
+            user.City = model.City;
+            user.Street = model.Street;
+            user.Number = model.Number;
             await _userManager.UpdateAsync(user);
         }
 
