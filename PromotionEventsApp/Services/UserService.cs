@@ -55,5 +55,20 @@ namespace PromotionEventsApp.Services
             }
 
         }
+
+        public UserPersonalDataViewModel GetPersonalDataViewModel(User user)
+        {
+             return new UserPersonalDataViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                City = user.City,
+                Street = user.Street,
+                Number = user.Number,
+                ZipCode = user.ZipCode
+            };
+
+        }
     }
 }

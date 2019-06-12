@@ -13,6 +13,9 @@ namespace PromotionEventsApp.Services.Abstract
         Task ChangePersonalData(UserPersonalDataViewModel model, User user);
         Task<IdentityResult> ChangePassword(ChangePasswordViewModel model, User user);
         Task ChangeEmail(ChangeEmailViewModel model, User user);
+        UserPersonalDataViewModel GetPersonalDataViewModel(User user);
+
+
 
     }
 }
