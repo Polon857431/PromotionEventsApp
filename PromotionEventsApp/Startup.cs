@@ -80,6 +80,7 @@ namespace PromotionEventsApp
             services.AddScoped<ISpotService, SpotService>();
             services.AddScoped<IRankRepository, RankRepository>();
             services.AddScoped<IRankingService, RankingService>();
+            services.AddScoped<IUserService, UserService>();
 
             //services.AddScoped<IEventRepository, EventRepository>();
         }
