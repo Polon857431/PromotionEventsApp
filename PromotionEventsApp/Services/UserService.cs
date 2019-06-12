@@ -10,7 +10,7 @@ using PromotionEventsApp.ViewModels;
 
 namespace PromotionEventsApp.Services
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
 
@@ -20,20 +20,36 @@ namespace PromotionEventsApp.Services
         }
 
 
+    
+
         public async Task ChangePersonalData(UserPersonalDataViewModel model, User user)
         {
-           await _userManager.UpdateAsync(user);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+            await _userManager.UpdateAsync(user);
         }
 
-        public async Task ChangePassword(ChangePasswordViewModel model, User user)
+        public async Task<IdentityResult> ChangePassword(ChangePasswordViewModel model, User user)
         {
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
             await _userManager.UpdateAsync(user);
+            return result;
 
         }
 
         public async Task ChangeEmail(ChangeEmailViewModel model, User user)
         {
-            await _userManager.UpdateAsync(user);
+            if (await _userManager.CheckPasswordAsync(user, model.Password) && user.Email.Equals(model.Email))
+            {
+                user.Email = model.Email;
+                await _userManager.UpdateAsync(user);
+
+            }
+            else
+            {
+                //todo
+            }
 
         }
     }
