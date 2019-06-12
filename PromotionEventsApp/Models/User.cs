@@ -12,5 +12,6 @@ namespace PromotionEventsApp.Models
         public string Number { get; set; }
         public ICollection<Member> Events { get; set; }
         public ICollection<VisitedSpot> Spots { get; set; }
+        public string ZipCode { get; set; }
     }
 }
