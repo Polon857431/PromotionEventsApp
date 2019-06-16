@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Runtime.InteropServices.ComTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.ViewModels;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 
 namespace PromotionEventsApp.Controllers
 {
@@ -31,6 +33,7 @@ namespace PromotionEventsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
+
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByEmailAsync(model.Email);
@@ -43,25 +46,22 @@ namespace PromotionEventsApp.Controllers
                     {
                         if (user.LockoutEnabled)
                         {
-                            if (await _userManager.IsInRoleAsync(user, "Admin") || await _userManager.IsInRoleAsync(user, "SuperAdmin"))
-                            {
-                                return Redirect(returnUrl ?? "/Admin/Index");
-                            }
-                            else
-                            {
-                                return Redirect(returnUrl ?? "/Account/Index");
-                            }
+                           
+                                return Redirect(returnUrl ?? "/Home/Index");
+                            
                         }
 
                         await _signInManager.SignOutAsync();
-                        // return View("AccessDenied");
+                        return View("AccessDenied");
                     }
                 }
 
-                ModelState.AddModelError(nameof(LoginViewModel.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
+                ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
             }
-            return View(model);
+            return Redirect("/Index/Index");
+
         }
+
         #endregion
 
         #region Logout

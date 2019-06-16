@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
@@ -22,22 +25,22 @@ namespace PromotionEventsApp.Controllers
 
         public async Task<IActionResult> UserEvents()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email).Value);
             var result = await _eventService.UserEvents(user);
             return View(result);
         }
 
         public async Task<IActionResult> Index()
         {
-
-            return View(await _userManager.FindByNameAsync(User.Identity.Name));
+            var user =  await _userManager.GetUserAsync(HttpContext.User);
+            return View(user);
         }
 
         #region ChangePerosnalData
         [HttpGet]
         public async Task<IActionResult> ChangePersonalData()
         {
-            return View(_userService.GetPersonalDataViewModel(await _userManager.FindByNameAsync(User.Identity.Name)));
+            return View(_userService.GetPersonalDataViewModel(await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email).Value)));
         }
 
         [HttpPost]
@@ -48,7 +51,7 @@ namespace PromotionEventsApp.Controllers
                 return View(model);
             }
 
-            await _userService.ChangePersonalData(model, await _userManager.FindByNameAsync(User.Identity.Name));
+            await _userService.ChangePersonalData(model, await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value));
             return RedirectToAction("Index");
         }
         #endregion

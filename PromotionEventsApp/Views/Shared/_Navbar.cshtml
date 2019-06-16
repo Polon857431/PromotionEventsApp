@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Security.Claims
+
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PromotionEventsApp</a>
@@ -8,19 +9,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                @*@if (User.IsInRole("Admin"))
-                {*@
+                @if (User.IsInRole("Admin"))
+                {
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="" asp-action=""><i class="fas fa-crown"></i> Panel Admina</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="" asp-action=""><i class="fas fa-user"></i> Panel Użytkownika</a></li>
+                }
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="UserPanel" asp-action="Index"><i class="fas fa-user"></i> Panel Użytkownika</a></li>
 
-                @*}*@
+
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
             <ul class="navbar-nav">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj <i class="fas fa-power-off"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj @User.Identity.Name<i class="fas fa-power-off"></i></a></li>
                 }
                 else
                 {
