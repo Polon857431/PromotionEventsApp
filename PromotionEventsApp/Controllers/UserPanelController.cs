@@ -52,6 +52,7 @@ namespace PromotionEventsApp.Controllers
             }
 
             await _userService.ChangePersonalData(model, await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value));
+            
             return RedirectToAction("Index");
         }
         #endregion
