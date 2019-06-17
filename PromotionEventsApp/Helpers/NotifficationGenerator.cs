@@ -7,14 +7,15 @@ namespace PromotionEventsApp.Helpers
 {
     public class NotificationGenerator
     {
-        public static Notification CreateNotification(string title, string content, string color, string icon)
+        public static Notification CreateNotification(string title, string content, NotificationType type, string icon, int delayInMs)
         {
             return new Notification()
             {
                 Title = title,
                 Content = content,
-                Color = color,
-                Icon = icon
+                Type = type,
+                Icon = icon,
+                DelayInMs = delayInMs
             };
         }
     }
