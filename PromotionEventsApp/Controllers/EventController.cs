@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
@@ -12,7 +16,7 @@ namespace PromotionEventsApp.Controllers
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
         private readonly ISpotService _spotService;
-        
+
 
         public EventController(IEventService eventService, UserManager<User> userManager, ISpotService spotService)
         {
@@ -38,7 +42,37 @@ namespace PromotionEventsApp.Controllers
                 return View(model);
             }
 
-            await _eventService.CreateEvent(model);
+            try
+            {
+                await _eventService.CreateEvent(model);
+            }
+            catch
+            {
+
+                TempData["notifications"] = JsonConvert.SerializeObject(
+                    new List<Notification>
+                    {
+                        NotificationGenerator.CreateNotification(
+                            "Dodanie wydarzenia",
+                            "Nie udało się stworzyć wydarzenia",
+                            NotificationType.Danger,
+                            "fas fa-close",
+                            3000)
+                    });
+                return View();
+            }
+
+            TempData["notifications"] = JsonConvert.SerializeObject(
+                new List<Notification>
+                {
+                    NotificationGenerator.CreateNotification(
+                    "Dodanie wydarzenia",
+                    "Wydarzenie " + model.Name + "zostalo pomyślnie dodane",
+                    NotificationType.Success,
+                    "fas fa-plus",
+                    3000)
+
+                });
             return View();
         }
         #endregion
@@ -80,7 +114,7 @@ namespace PromotionEventsApp.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             await _eventService.JoinToEvent(eventId, user);
-            return Json(new {success = true});
+            return Json(new { success = true });
         }
 
         [HttpGet]
@@ -88,10 +122,10 @@ namespace PromotionEventsApp.Controllers
         {
             return View(await _spotService.GetAddSpotToEventViewModel(eventId));
         }
-        
 
 
-        
+
+
 
 
 
