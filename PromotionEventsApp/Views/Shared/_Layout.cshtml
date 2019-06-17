@@ -27,15 +27,7 @@
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             
-            @if (User.Identity.IsAuthenticated)
-            {
-                @User.Identity.Name
-            }
-            else
-            {
-                @Html.Raw("DUPA")
-            }
-            @RenderBody()
+     
         </main>
     </div>
 <partial name="_NotificationS" model="ViewBag.Notifications" />
