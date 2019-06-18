@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PromotionEventsApp.Services
