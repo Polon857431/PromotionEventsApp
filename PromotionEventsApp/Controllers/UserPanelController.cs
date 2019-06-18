@@ -37,7 +37,7 @@ namespace PromotionEventsApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user =  await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             return View(user);
         }
 
@@ -57,18 +57,14 @@ namespace PromotionEventsApp.Controllers
             }
 
             await _userService.ChangePersonalData(model, await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value));
-            
+
             return RedirectToAction("Index");
         }
         #endregion
 
 
         #region ChangeEmail
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            throw new System.NotImplementedException();
-        }
+
 
 
 
@@ -76,20 +72,20 @@ namespace PromotionEventsApp.Controllers
         {
             throw new System.NotImplementedException();
         }
-        #endregion
+
 
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
             throw new System.NotImplementedException();
         }
-
+        #endregion
         public IActionResult ChangePassword()
         {
             return View();
         }
-
-        public  async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -148,7 +144,7 @@ namespace PromotionEventsApp.Controllers
 
         public IActionResult UserRank()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }
