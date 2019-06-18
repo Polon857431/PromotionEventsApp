@@ -1,9 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Expressions;
+using Newtonsoft.Json;
+using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
@@ -81,7 +86,64 @@ namespace PromotionEventsApp.Controllers
 
         public IActionResult ChangePassword()
         {
-            throw new System.NotImplementedException();
+            return View();
+        }
+
+        public  async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var _ in ModelState)
+                {
+                    foreach (var __ in _.Value.Errors)
+                    {
+                        sb.Append(__.ErrorMessage);
+                    }
+                }
+                TempData["notifications"] = JsonConvert.SerializeObject(
+                    new List<Notification>
+                    {
+                        NotificationGenerator.CreateNotification(
+                            "Zmiana hasłą",
+                            sb.ToString(),
+                            NotificationType.Danger,
+                            "fas fa-close",
+                            3000)
+                    });
+                return View();
+
+            }
+
+            var result = await _userService.ChangePassword(model, await _userManager.FindByNameAsync(User.Identity.Name));
+            if (result.Succeeded)
+            {
+                TempData["notifications"] = JsonConvert.SerializeObject(
+                    new List<Notification>
+                    {
+                        NotificationGenerator.CreateNotification(
+                            "Zmiana hasłą",
+                            "Hasło zostało zmiennione pomyślnie",
+                            NotificationType.Success,
+                            "fas fa-close",
+                            3000)
+                    });
+            }
+            else
+            {
+                TempData["notifications"] = JsonConvert.SerializeObject(
+                    new List<Notification>
+                    {
+                        NotificationGenerator.CreateNotification(
+                            "Zmiana hasłą",
+                            "Zmiana hasła się nie powiodłą",
+                            NotificationType.Warning,
+                            "fas fa-close",
+                            3000)
+                    });
+            }
+
+            return View();
         }
 
         public IActionResult UserRank()
