@@ -142,9 +142,9 @@ namespace PromotionEventsApp.Controllers
             return View();
         }
 
-        public IActionResult UserRank()
-        {
+        //public IActionResult UserRank()
+        //{
             
-        }
+        //}
     }
 }
