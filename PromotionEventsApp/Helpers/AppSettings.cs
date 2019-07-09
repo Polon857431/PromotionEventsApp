@@ -7,6 +7,6 @@ namespace PromotionEventsApp.Helpers
 {
     public class AppSettings
     {
-        public string sSecret { get; set;};
+        public string Secret { get; set;}
     }
 }

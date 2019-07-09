@@ -88,7 +88,10 @@ namespace PromotionEventsApp
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -96,7 +99,7 @@ namespace PromotionEventsApp
             {
                 x.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
-
+            
             services.AddAutoMapper(
                 typeof(EventToEventViewModel).Assembly,
                 typeof(EventViewModelToEvent).Assembly);
