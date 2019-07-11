@@ -6,6 +6,11 @@ using PromotionEventsApp.Models;
 using PromotionEventsApp.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
+using System.Text;
+using PromotionEventsApp.Helpers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PromotionEventsApp.Controllers
 {
@@ -13,12 +18,18 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly AppSettings _appSettings;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _appSettings = appSettings.Value;
         }
+
+
+
+
 
         #region Login
         [AllowAnonymous]
@@ -37,28 +48,32 @@ namespace PromotionEventsApp.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
+                if (user == null)
                 {
-                    await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                    ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
 
-                    if (result.Succeeded)
-                    {
-                        if (user.LockoutEnabled)
-                        {
-                           
-                                return Redirect(returnUrl ?? "/Home/Index");
-                            
-                        }
+                    return View(model);
+                }
+                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
 
-                        await _signInManager.SignOutAsync();
-                        return View("AccessDenied");
-                    }
+                    return View(model);
+                }
+                else
+                { 
+                    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                    var JWToken = new JwtSecurityToken(
+                        );
+              
+
                 }
 
-                ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
+
+
             }
-            return Redirect("/Index/Index");
+
+            return View();
 
         }
 
