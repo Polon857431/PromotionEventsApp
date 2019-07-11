@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,10 +19,7 @@ using PromotionEventsApp.Repositories.Abstract;
 using PromotionEventsApp.Services;
 using PromotionEventsApp.Services.Abstract;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.IdentityModel.Tokens;
-using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Profiles;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -60,16 +56,16 @@ namespace PromotionEventsApp
                 options.ValidationInterval = TimeSpan.Zero;
             });
             services.AddIdentity<User, Role>(opt =>
-                {
-                    opt.Password.RequiredLength = 6;
-                    opt.Password.RequireNonAlphanumeric = false;
-                    opt.Password.RequireLowercase = false;
-                    opt.Password.RequireUppercase = false;
-                    opt.Password.RequireDigit = false;
-                    opt.SignIn.RequireConfirmedEmail = false;
-                    opt.User.RequireUniqueEmail = true;
+            {
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+                opt.SignIn.RequireConfirmedEmail = false;
+                opt.User.RequireUniqueEmail = true;
 
-                })
+            })
                 .AddEntityFrameworkStores<AppDbContext>();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -99,40 +95,11 @@ namespace PromotionEventsApp
                 };
             });
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-
-            // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
-
-
-
-
-
             services.AddMvc().AddJsonOptions(x =>
             {
                 x.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
-            
+
             services.AddAutoMapper(
                 typeof(EventToEventViewModel).Assembly,
                 typeof(EventViewModelToEvent).Assembly);
@@ -147,7 +114,7 @@ namespace PromotionEventsApp
 
             //services.AddScoped<IEventRepository, EventRepository>();
         }
-      
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
