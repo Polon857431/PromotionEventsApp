@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,9 @@ using PromotionEventsApp.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PromotionEventsApp.Controllers
 {
@@ -63,9 +67,22 @@ namespace PromotionEventsApp.Controllers
                 else
                 { 
                     var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-                    var JWToken = new JwtSecurityToken(
-                        );
-              
+                    var jwToken = new JwtSecurityToken(
+                        issuer: "http://localhost:44369/",
+                        audience: "http://localhost:44369/",
+                        claims: new[] {new Claim(ClaimTypes.Name, user.Id.ToString())},
+                        notBefore: new DateTimeOffset(DateTime.Now).DateTime,
+                        expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
+                        //Using HS256 Algorithm to encrypt Token
+                        signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    );
+                    var token = new JwtSecurityTokenHandler().WriteToken(jwToken);
+                    HttpContext.Session.SetString("JWToken", token);
+                    RedirectToAction("Index", "Home");
+
+
+
+
 
                 }
 
@@ -83,8 +100,9 @@ namespace PromotionEventsApp.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+            HttpContext.Session.Clear();
+            return Redirect("~/Home/Index");
+         
         }
         #endregion
 

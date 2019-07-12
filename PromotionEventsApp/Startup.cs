@@ -55,18 +55,22 @@ namespace PromotionEventsApp
             {
                 options.ValidationInterval = TimeSpan.Zero;
             });
-            services.AddIdentity<User, Role>(opt =>
-            {
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit = false;
-                opt.SignIn.RequireConfirmedEmail = false;
-                opt.User.RequireUniqueEmail = true;
 
-            })
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            //services.AddIdentity<User, Role>(opt =>
+            //{
+            //    opt.Password.RequiredLength = 6;
+            //    opt.Password.RequireNonAlphanumeric = false;
+            //    opt.Password.RequireLowercase = false;
+            //    opt.Password.RequireUppercase = false;
+            //    opt.Password.RequireDigit = false;
+            //    opt.SignIn.RequireConfirmedEmail = false;
+            //    opt.User.RequireUniqueEmail = true;
+
+            //})
+            //    .AddEntityFrameworkStores<AppDbContext>();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
