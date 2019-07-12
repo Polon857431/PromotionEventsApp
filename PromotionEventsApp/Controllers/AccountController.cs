@@ -22,17 +22,14 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly AppSettings _appSettings;
+        private readonly JWTConfiguration _jWtConfiguration;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IOptions<AppSettings> appSettings)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, JWTConfiguration jWtConfiguration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _appSettings = appSettings.Value;
+            _jWtConfiguration = jWtConfiguration;
         }
-
-
-
 
 
         #region Login
@@ -66,7 +63,7 @@ namespace PromotionEventsApp.Controllers
                 }
                 else
                 { 
-                    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                    var key = Encoding.ASCII.GetBytes(_jWtConfiguration.Secret);
                     var jwToken = new JwtSecurityToken(
                         issuer: "http://localhost:44369/",
                         audience: "http://localhost:44369/",
