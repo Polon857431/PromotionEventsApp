@@ -23,12 +23,14 @@ namespace PromotionEventsApp.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly JWTConfiguration _jWtConfiguration;
+        private readonly RoleManager<Role> _roleManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, JWTConfiguration jWtConfiguration)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IOptions<JWTConfiguration> jWtConfiguration, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _jWtConfiguration = jWtConfiguration;
+            _roleManager = roleManager;
+            _jWtConfiguration = jWtConfiguration.Value;
         }
 
 
@@ -43,7 +45,7 @@ namespace PromotionEventsApp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
 
             if (ModelState.IsValid)
@@ -75,7 +77,7 @@ namespace PromotionEventsApp.Controllers
                     );
                     var token = new JwtSecurityTokenHandler().WriteToken(jwToken);
                     HttpContext.Session.SetString("JWToken", token);
-                    RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
 
 
 
@@ -138,7 +140,10 @@ namespace PromotionEventsApp.Controllers
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-
+                if (!await _roleManager.RoleExistsAsync("User"))
+                {
+                    await _roleManager.CreateAsync(new Role {Name = "User"});
+                }
                 await _userManager.AddToRoleAsync(user, "User");
 
                 return View("Login");

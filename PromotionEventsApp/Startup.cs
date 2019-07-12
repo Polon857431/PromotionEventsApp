@@ -100,7 +100,8 @@ namespace PromotionEventsApp
             services.AddMvc().AddJsonOptions(x =>
             {
                 x.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+            }).AddSessionStateTempDataProvider();
+            services.AddSession();
 
             services.AddAutoMapper(
                 typeof(EventToEventViewModel).Assembly,
@@ -135,6 +136,7 @@ namespace PromotionEventsApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
             app.UseAuthentication();
 
 
