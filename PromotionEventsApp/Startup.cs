@@ -114,6 +114,7 @@ namespace PromotionEventsApp
             services.AddScoped<IRankRepository, RankRepository>();
             services.AddScoped<IRankingService, RankingService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             //services.AddScoped<IEventRepository, EventRepository>();
         }
