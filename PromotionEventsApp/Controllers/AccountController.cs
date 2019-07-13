@@ -17,6 +17,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Controllers
 {
@@ -24,17 +25,17 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JWTConfiguration _jWtConfiguration;
+        private readonly ITokenService _tokenService;
         private readonly RoleManager<Role> _roleManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IOptions<JWTConfiguration> jWtConfiguration, RoleManager<Role> roleManager)
+
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
             _roleManager = roleManager;
-            _jWtConfiguration = jWtConfiguration.Value;
         }
-
 
         #region Login
         [AllowAnonymous]
@@ -67,19 +68,8 @@ namespace PromotionEventsApp.Controllers
                 }
                 else
                 { 
-                    var key = Encoding.ASCII.GetBytes(_jWtConfiguration.Secret);
-                    var jwToken = new JwtSecurityToken(
-                       // issuer: "http://localhost:44369/",
-                       // audience: "http://localhost:44369/",
-                        claims:GetUserClaims(user),
-                        notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                        expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
-                       
-                        //Using HS256 Algorithm to encrypt Token
-                        signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    );
-                    var token = new JwtSecurityTokenHandler().WriteToken(jwToken);
-                    HttpContext.Session.SetString("JWToken", token);
+                  
+                    HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(_tokenService.GetUserClaims(user)));
                     return RedirectToAction("Index", "Home");
 
 
@@ -162,15 +152,7 @@ namespace PromotionEventsApp.Controllers
         }
         #endregion
 
-        private List<Claim> GetUserClaims(User user)
-        {
 
-            return new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName.ToString())
-            };
-        }
     }
 
 }
