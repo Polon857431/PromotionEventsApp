@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using PromotionEventsApp.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -69,7 +71,7 @@ namespace PromotionEventsApp.Controllers
                     var jwToken = new JwtSecurityToken(
                        // issuer: "http://localhost:44369/",
                        // audience: "http://localhost:44369/",
-                        claims: new[] {new Claim(ClaimTypes.Name, user.Id.ToString())},
+                        claims:GetUserClaims(user),
                         notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                         expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
                        
@@ -159,6 +161,16 @@ namespace PromotionEventsApp.Controllers
             }
         }
         #endregion
+
+        private List<Claim> GetUserClaims(User user)
+        {
+
+            return new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName.ToString())
+            };
+        }
     }
 
 }
