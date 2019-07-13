@@ -47,7 +47,10 @@ namespace PromotionEventsApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(x =>
+            {
+                x.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            }).AddSessionStateTempDataProvider(); ;
             services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
@@ -74,8 +77,8 @@ namespace PromotionEventsApp
             services.Configure<JWTConfiguration>(appSettingsSection);
 
             // configure jwt authentication
-            var JWTConfiguration = appSettingsSection.Get<JWTConfiguration>();
-            var key = Encoding.ASCII.GetBytes(JWTConfiguration.Secret);
+            var jwtConfiguration = appSettingsSection.Get<JWTConfiguration>();
+            var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,10 +100,7 @@ namespace PromotionEventsApp
                 };
             });
 
-            services.AddMvc().AddJsonOptions(x =>
-            {
-                x.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).AddSessionStateTempDataProvider();
+            
             services.AddSession();
 
             services.AddAutoMapper(
@@ -133,13 +133,21 @@ namespace PromotionEventsApp
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+           
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+  
+            app.Use(async (context, next) =>
+            {
+                var jwToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(jwToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + jwToken);
+                }
+                await next();
+            });
             app.UseAuthentication();
-
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

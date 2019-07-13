@@ -67,11 +67,12 @@ namespace PromotionEventsApp.Controllers
                 { 
                     var key = Encoding.ASCII.GetBytes(_jWtConfiguration.Secret);
                     var jwToken = new JwtSecurityToken(
-                        issuer: "http://localhost:44369/",
-                        audience: "http://localhost:44369/",
+                       // issuer: "http://localhost:44369/",
+                       // audience: "http://localhost:44369/",
                         claims: new[] {new Claim(ClaimTypes.Name, user.Id.ToString())},
                         notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                         expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
+                       
                         //Using HS256 Algorithm to encrypt Token
                         signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     );
