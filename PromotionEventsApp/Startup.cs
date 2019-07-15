@@ -74,10 +74,10 @@ namespace PromotionEventsApp
                 .AddEntityFrameworkStores<AppDbContext>();
 
             var appSettingsSection = Configuration.GetSection("JWTConfiguration");
-            services.Configure<JWTConfiguration>(appSettingsSection);
+            services.Configure<JwtConfiguration>(appSettingsSection);
 
             // configure jwt authentication
-            var jwtConfiguration = appSettingsSection.Get<JWTConfiguration>();
+            var jwtConfiguration = appSettingsSection.Get<JwtConfiguration>();
             var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
             services.AddAuthentication(x =>
             {

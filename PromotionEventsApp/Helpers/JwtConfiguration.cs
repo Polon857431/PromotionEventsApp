@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PromotionEventsApp.Helpers
 {
-    public class JWTConfiguration
+    public class JwtConfiguration
     {
         public string Secret { get; set;}
     }

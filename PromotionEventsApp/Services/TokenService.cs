@@ -15,9 +15,9 @@ namespace PromotionEventsApp.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly JWTConfiguration _jwtConfiguration;
+        private readonly JwtConfiguration _jwtConfiguration;
 
-        public TokenService(IOptions<JWTConfiguration>  jwtConfiguration)
+        public TokenService(IOptions<JwtConfiguration>  jwtConfiguration)
         {
             _jwtConfiguration = jwtConfiguration.Value;
                 ;
