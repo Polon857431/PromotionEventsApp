@@ -90,7 +90,7 @@ namespace PromotionEventsApp.Controllers
 
         #region Logout
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return Redirect("~/Home/Index");
