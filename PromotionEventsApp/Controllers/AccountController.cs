@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.ViewModels;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
-using System.Text;
-using PromotionEventsApp.Helpers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
 using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Controllers
@@ -24,15 +12,13 @@ namespace PromotionEventsApp.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly RoleManager<Role> _roleManager;
 
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, RoleManager<Role> roleManager)
+        public AccountController(UserManager<User> userManager, ITokenService tokenService, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
         }
@@ -67,8 +53,8 @@ namespace PromotionEventsApp.Controllers
                     return View(model);
                 }
                 else
-                { 
-                  
+                {
+
                     HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(_tokenService.GetUserClaims(user)));
                     return RedirectToAction("Index", "Home");
 
@@ -90,11 +76,11 @@ namespace PromotionEventsApp.Controllers
 
         #region Logout
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return Redirect("~/Home/Index");
-         
+
         }
         #endregion
 
@@ -135,7 +121,7 @@ namespace PromotionEventsApp.Controllers
             {
                 if (!await _roleManager.RoleExistsAsync("User"))
                 {
-                    await _roleManager.CreateAsync(new Role {Name = "User"});
+                    await _roleManager.CreateAsync(new Role { Name = "User" });
                 }
                 await _userManager.AddToRoleAsync(user, "User");
 
