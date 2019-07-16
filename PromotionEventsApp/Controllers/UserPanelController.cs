@@ -74,14 +74,20 @@ namespace PromotionEventsApp.Controllers
 
         public IActionResult ChangeEmail()
         {
-            throw new System.NotImplementedException();
+            return View();
         }
 
 
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
         {
-            throw new System.NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByIdAsync(_httpContextAccessor.GetUserId().ToString());
+            await _userService.ChangeEmail(model, user);
+            return View();
         }
         #endregion
         public IActionResult ChangePassword()
