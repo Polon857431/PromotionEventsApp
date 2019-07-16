@@ -3,11 +3,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Expressions;
 using Newtonsoft.Json;
+using PromotionEventsApp.Extensions;
 using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
@@ -20,12 +22,14 @@ namespace PromotionEventsApp.Controllers
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public UserPanelController(IEventService eventService, UserManager<User> userManager, IUserService userService)
+        public UserPanelController(IEventService eventService, UserManager<User> userManager, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _eventService = eventService;
             _userManager = userManager;
             _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> UserEvents()
@@ -37,7 +41,7 @@ namespace PromotionEventsApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.Users.SingleAsync(_=>_.Id == _httpContextAccessor.GetUserId());
             return View(user);
         }
 
