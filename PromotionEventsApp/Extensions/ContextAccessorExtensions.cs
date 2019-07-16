@@ -9,6 +9,10 @@ namespace PromotionEventsApp.Extensions
 {
     public static class ContextAccessorExtensions
     {
-   
+        public static int GetUserId(this IHttpContextAccessor accessor)
+        {
+            int.TryParse(accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, out var result);
+            return result;
+        }
     }
 }
