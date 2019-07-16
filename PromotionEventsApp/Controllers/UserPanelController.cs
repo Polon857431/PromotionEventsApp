@@ -49,7 +49,7 @@ namespace PromotionEventsApp.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePersonalData()
         {
-            return View(_userService.GetPersonalDataViewModel(await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email).Value)));
+            return View(_userService.GetPersonalDataViewModel(await _userManager.FindByIdAsync(_httpContextAccessor.GetUserId().ToString())));
         }
 
         [HttpPost]
