@@ -22,7 +22,7 @@ namespace PromotionEventsApp.Controllers
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserPanelController(IEventService eventService, UserManager<User> userManager, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
