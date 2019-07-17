@@ -25,6 +25,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using PromotionEventsApp.Helpers;
+using Microsoft.OpenApi.Models;
 
 namespace PromotionEventsApp
 {
@@ -73,6 +74,7 @@ namespace PromotionEventsApp
             })
                 .AddEntityFrameworkStores<AppDbContext>();
 
+
             var appSettingsSection = Configuration.GetSection("JWTConfiguration");
             services.Configure<JwtConfiguration>(appSettingsSection);
 
@@ -116,6 +118,11 @@ namespace PromotionEventsApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
             //services.AddScoped<IEventRepository, EventRepository>();
         }
 
@@ -149,6 +156,13 @@ namespace PromotionEventsApp
                 await next();
             });
             app.UseAuthentication();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
