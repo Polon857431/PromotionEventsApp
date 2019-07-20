@@ -175,7 +175,7 @@ namespace PromotionEventsApp
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            InitalizersLoader.LoadInitializers(roleManager, userManager, configuration).Wait();
+           // InitalizersLoader.LoadInitializers(roleManager, userManager, configuration).Wait();
         }
     }
 }
