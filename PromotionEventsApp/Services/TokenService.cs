@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PromotionEventsApp.Helpers;
@@ -15,12 +16,14 @@ namespace PromotionEventsApp.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly UserManager<User> _userManager;
         private readonly JwtConfiguration _jwtConfiguration;
 
-        public TokenService(IOptions<JwtConfiguration>  jwtConfiguration)
+        public TokenService(IOptions<JwtConfiguration> jwtConfiguration, UserManager<User> userManager)
         {
+            _userManager = userManager;
             _jwtConfiguration = jwtConfiguration.Value;
-                ;
+            ;
         }
 
         public string GenerateToken(List<Claim> claims)
@@ -37,13 +40,21 @@ namespace PromotionEventsApp.Services
             return new JwtSecurityTokenHandler().WriteToken(jwToken);
         }
 
-        public List<Claim> GetUserClaims(User user)
+        public async Task<List<Claim>> GetUserClaims(User user)
         {
-            return new List<Claim>
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName.ToString())
             };
+
+            foreach (var role in roles)
+            {
+                result.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return result.ToList();
         }
     }
 }

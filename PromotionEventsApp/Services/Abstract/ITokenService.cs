@@ -10,6 +10,6 @@ namespace PromotionEventsApp.Services.Abstract
     public interface ITokenService
     {
         string GenerateToken(List<Claim> claims);
-        List<Claim> GetUserClaims(User user);
+        Task<List<Claim>> GetUserClaims(User user);
     }
 }
