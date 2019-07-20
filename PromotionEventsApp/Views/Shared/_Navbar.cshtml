@@ -25,7 +25,7 @@
             <ul class="navbar-nav">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj @User.Identity.Name<i class="fas fa-power-off"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj @User.Identity.Name <i class="fas fa-power-off"></i></a></li>
                 }
                 else
                 {
