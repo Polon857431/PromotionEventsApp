@@ -60,7 +60,7 @@ namespace PromotionEventsApp.Controllers
                 return View(model);
             }
 
-            await _userService.ChangePersonalData(model, await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value));
+            await _userService.ChangePersonalData(model, await _userManager.FindByIdAsync(_httpContextAccessor.GetUserId().ToString()));
 
             return RedirectToAction("Index");
         }
