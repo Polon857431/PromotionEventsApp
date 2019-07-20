@@ -1,9 +1,109 @@
 ﻿@model PromotionEventsApp.ViewModels.UserPersonalDataViewModel
-
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewData["Title"] = "Zmień swoje dane";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Model.FirstName;
-@Model.LastName;
+<div class="container d-flex justify-content-center">
+    <div class="card shadow" style="width: 100%;">
+        <div class="card-header">
+            <h1> <i class="fas fa-user-cog"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col text-left">
+                    <h4><i class="fas fa-user"></i> Podstawowe informacje</h4>
+                </div>
+            </div>
+            <hr />
+            <form asp-action="ChangePersonalData" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.FirstName">Imię</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.FirstName" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.LastName">Nazwisko</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.LastName" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.PhoneNumber">Telefon</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.PhoneNumber" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col text-left">
+                        <h4><i class="fas fa-address-card"></i> Adres</h4>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.City">Miasto</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.City" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.Street">Ulica</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.Street" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.Number">Numer</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.Number" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3 text-left">
+                            <strong> <label asp-for="@Model.ZipCode">Kod pocztowy</label> </strong>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="@Model.ZipCode" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <a class="btn btn-primary" asp-action="Index"><i class="fas fa-arrow-left"></i> Cofnij</a>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Zapisz</button>
+                    </div>
+                </div>
+                <div class="text-danger" asp-validation-summary="All"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
