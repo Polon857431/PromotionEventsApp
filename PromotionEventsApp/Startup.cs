@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using PromotionEventsApp.Helpers;
 using Microsoft.OpenApi.Models;
+using PromotionEventsApp.DAL.Initializers;
 
 namespace PromotionEventsApp
 {
@@ -102,7 +103,7 @@ namespace PromotionEventsApp
                 };
             });
 
-            
+
             services.AddSession();
 
             services.AddAutoMapper(
@@ -128,7 +129,11 @@ namespace PromotionEventsApp
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
+            IConfiguration configuration,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -141,11 +146,11 @@ namespace PromotionEventsApp
                 app.UseHsts();
             }
 
-           
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
-  
+
             app.Use(async (context, next) =>
             {
                 var jwToken = context.Session.GetString("JWToken");
@@ -169,6 +174,8 @@ namespace PromotionEventsApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InitalizersLoader.LoadInitializers(roleManager, userManager, configuration).Wait();
         }
     }
 }
