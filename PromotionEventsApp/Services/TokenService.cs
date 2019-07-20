@@ -56,5 +56,24 @@ namespace PromotionEventsApp.Services
 
             return result.ToList();
         }
+
+        public async Task<bool> CheckUserPassword(User user, string password)
+        {
+            return await _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task<string> Auth(string username, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(username);
+            if (await CheckUserPassword(user, password))
+            {
+                return GenerateToken(await GetUserClaims(user));
+            }
+
+            return null;
+        }
+
+
+
     }
 }

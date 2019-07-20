@@ -46,7 +46,7 @@ namespace PromotionEventsApp.Controllers
 
                     return View(model);
                 }
-                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                if (!await _tokenService.CheckUserPassword(user, model.Password))
                 {
                     ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
 
@@ -55,7 +55,7 @@ namespace PromotionEventsApp.Controllers
                 else
                 {
 
-                    HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(_tokenService.GetUserClaims(user)));
+                    HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(await _tokenService.GetUserClaims(user)));
                     return RedirectToAction("Index", "Home");
 
 
