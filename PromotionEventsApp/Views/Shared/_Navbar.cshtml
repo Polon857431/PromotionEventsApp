@@ -12,8 +12,11 @@
 
 
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="AdminPanel" asp-action="Index"><i class="fas fa-crown"></i> Panel Admina</a></li>
+                @if (User.IsInRole("User"))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="UserPanel" asp-action="Index"><i class="fas fa-user"></i> Panel Użytkownika</a></li>
 
-                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="UserPanel" asp-action="Index"><i class="fas fa-user"></i> Panel Użytkownika</a></li>
+                }
 
 
             </ul>
