@@ -11,5 +11,6 @@ namespace PromotionEventsApp.Services.Abstract
     {
         string GenerateToken(List<Claim> claims);
         Task<List<Claim>> GetUserClaims(User user);
+        Task<bool> CheckUserPassword(User user, string password);
     }
 }
