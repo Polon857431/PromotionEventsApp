@@ -7,7 +7,7 @@ using PromotionEventsApp.Models;
 
 namespace PromotionEventsApp.DAL.Initializers
 {
-    public class RoleInitalizer
+    public static class RoleInitalizer
     {
         private static readonly List<string> Roles = new List<string>()
         {

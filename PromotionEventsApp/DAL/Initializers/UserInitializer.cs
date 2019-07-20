@@ -8,7 +8,7 @@ using PromotionEventsApp.Models;
 
 namespace PromotionEventsApp.DAL.Initializers
 {
-    public class UserInitializer
+    public static class UserInitializer
     {
         public static async Task CreateAdminAccount(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
         {
