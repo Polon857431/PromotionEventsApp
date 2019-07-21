@@ -34,7 +34,7 @@ namespace PromotionEventsApp.Controllers
 
         public async Task<IActionResult> UserEvents()
         {
-            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email).Value);
+            var user = await _userManager.FindByIdAsync(_httpContextAccessor.GetUserId().ToString());
             var result = await _eventService.UserEvents(user);
             return View(result);
         }

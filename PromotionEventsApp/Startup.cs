@@ -118,6 +118,7 @@ namespace PromotionEventsApp
             services.AddScoped<IRankingService, RankingService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
 
             services.AddSwaggerGen(c =>
             {
