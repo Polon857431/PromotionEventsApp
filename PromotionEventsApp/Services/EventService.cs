@@ -21,14 +21,15 @@ namespace PromotionEventsApp.Services
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ISpotRepository _spotRepository;
+        private readonly IMemberRepository _memberRepository;
 
-        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotRepository spotRepository)
+        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotRepository spotRepository, IMemberRepository memberRepository)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
             _spotRepository = spotRepository;
-           
+            _memberRepository = memberRepository;
         }
 
         public async Task CreateEvent(EventViewModel model)
@@ -155,9 +156,8 @@ namespace PromotionEventsApp.Services
         public async Task JoinToEvent(int eventId, User user)
         {
             var e = await _eventRepository.GetAsync(eventId);
-            e.Members.Add(new Member() { Event = e, User = user });
-            _eventRepository.Update(e);
-            await _eventRepository.CommitAsync();
+            _memberRepository.Add(new Member() { Event = e, User = user });
+            await _memberRepository.CommitAsync();
         }
 
         public async Task LeaveEvent(int eventId, User user)
