@@ -49,7 +49,10 @@ namespace PromotionEventsApp.Services
         public async Task<EventViewModel> GetEventViewModel(int id)
         {
             var e = await _eventRepository.GetAsync(id);
-            return _mapper.Map<Event, EventViewModel>(e);
+
+            var result = _mapper.Map<Event, EventViewModel>(e);
+            result.Members = await EventMembers(id);
+            return result;
         }
 
         public async Task<Event> GetEvent(int id)

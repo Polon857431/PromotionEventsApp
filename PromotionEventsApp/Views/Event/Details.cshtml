@@ -1,4 +1,5 @@
-﻿@model PromotionEventsApp.ViewModels.EventViewModel
+﻿@using System.Security.AccessControl
+@model PromotionEventsApp.ViewModels.EventViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -9,7 +10,8 @@
     <div class="card shadow" style="width: 100%;">
         <div class="card-header">
             <h1>
-                <i class="fas fa-info-circle"></i> @ViewData["Title"]</h1>
+                <i class="fas fa-info-circle"></i> @ViewData["Title"]
+            </h1>
         </div>
         <div class="card-body">
             <div class="row">
@@ -53,13 +55,25 @@
                 </div>
             </div>
             <hr/>
-            <div class=" row">
-                <div class="col text-right">
-                    <a asp-action="JoinToEvent" asp-route-eventId="@Model.Id" class="btn btn-outline-success"> Zapisz się <i class="fas fa-plus"></i></a>
+            @if (User.Identity.IsAuthenticated)
+            {
+               
+                <div class=" row">
+                    <div class="col text-right">
+                        @if (Model.Members.All(_ => _.UserName != User.Identity.Name))
+                        {
+                            <a asp-action="JoinToEvent" asp-route-eventId="@Model.Id" class="btn btn-outline-success"> Zapisz się <i class="fas fa-plus"></i></a>
+                        }
+                        else
+                        {
+                            <a asp-action="JoinToEvent" asp-route-eventId="@Model.Id" class="btn btn-outline-danger"> Opusc wydarzenie <i class="fas fa-user-times"></i> </a>
+
+                        }
+                    </div>
                 </div>
-            </div>
-            <hr/>
-            <p></p>
+                <hr/>
+                <p></p>
+            }
             <div class="form-group row">
                 <div class="col-sm-6">
                     <h5>
@@ -70,13 +84,22 @@
                         </a>
                     </h5>
                     <div class="collapse" id="collapseMemberList">
-                        test
-                        //to do list all members
+                        @if (!Model.Members.Any())
+                        {
+                            <h4> Brak uczestników</h4>
+                        }
+                        else
+                        {
+                            foreach (var member in Model.Members)
+                            {
+                                <strong>@($"{@member.FirstName} {@member.LastName}")</strong><br />
+                            }
+                        }
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <h5>
-                        <b><i class="fas fa-map-marker-alt"></i>Punkty</b>
+                        <b><i class="fas fa-map-marker-alt"></i> Punkty</b>
                         <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseSpotList" aria-expanded="false">
                             Rozwiń / zwiń
                             <i class="fas fa-chevron-circle-down expand_caret"></i>
@@ -89,7 +112,7 @@
             </div>
 
 
-            <hr/>
+            <hr />
 
         </div>
 
