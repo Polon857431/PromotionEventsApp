@@ -48,7 +48,7 @@ namespace PromotionEventsApp.Services
 
         public async Task<List<Spot>> UserSpots(User user)
         {
-            var result =await _spotRepository.GetUserSpots(user);
+            var result = await _spotRepository.GetUserSpots(user);
             return result.Select(_ => _.Spot).ToList();
 
         }
@@ -74,7 +74,7 @@ namespace PromotionEventsApp.Services
         public async Task<AddSpotToEventViewModel> GetAddSpotToEventViewModel(int eventId)
         {
             List<Spot> availableSpots = await _spotRepository.GetAllAsync() as List<Spot>;
-   
+
             var eventSpots = await EventSpots(eventId);
             return new AddSpotToEventViewModel()
             {
@@ -83,6 +83,11 @@ namespace PromotionEventsApp.Services
                 AvailableSpots = (availableSpots ?? throw new InvalidOperationException()).Except(eventSpots).ToList()
             };
 
+        }
+
+        public async Task<Spot> GetSpot(int id)
+        {
+            return await _spotRepository.GetAsync(id);
         }
     }
 }
