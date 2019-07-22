@@ -14,15 +14,15 @@ namespace PromotionEventsApp.DAL.Initializers
         {
             var superAdmin = new User()
             {
-                UserName = configuration["SuperAdmin:UserName"],
-                FirstName = configuration["SuperAdmin:FirstName"],
-                LastName = configuration["SuperAdmin:LastName"],
-                Email = configuration["SuperAdmin:Email"],
+                UserName = configuration["Admin:UserName"],
+                FirstName = configuration["Admin:FirstName"],
+                LastName = configuration["Admin:LastName"],
+                Email = configuration["Admin:Email"],
                 EmailConfirmed = true
             };
             if (await userManager.FindByEmailAsync(superAdmin.Email) == null)
             {
-                await userManager.CreateAsync(superAdmin, configuration["SuperAdmin:Password"]);
+                await userManager.CreateAsync(superAdmin, configuration["Admin:Password"]);
                 await userManager.AddToRolesAsync(superAdmin, roleManager.Roles.Select(_ => _.Name).ToList());
             }
         }
