@@ -46,4 +46,9 @@
     <None Include="Views\Event\Edit.cshtml" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Pages\Spot\" />
+  </ItemGroup>
+
 </Project>

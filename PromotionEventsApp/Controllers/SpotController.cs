@@ -4,11 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PromotionEventsApp.Helpers;
+using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Controllers
 {
     public class SpotController : Controller
     {
+        private readonly ISpotService _spotService;
+
+        public SpotController(ISpotService spotService)
+        {
+            _spotService = spotService;
+        }
+
         // GET: Spot
         public ActionResult Index()
         {
@@ -16,9 +25,11 @@ namespace PromotionEventsApp.Controllers
         }
 
         // GET: Spot/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var spot = await _spotService.GetSpot(id);
+            ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(QrGenerator.GetCode(spot.Id+"_"+spot.Name,20));
+            return View(spot);
         }
 
         // GET: Spot/Create
