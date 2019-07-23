@@ -36,7 +36,7 @@ namespace PromotionEventsApp.Controllers
 
         // GET: Spot/Create
         [HttpGet]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             
             return View();
