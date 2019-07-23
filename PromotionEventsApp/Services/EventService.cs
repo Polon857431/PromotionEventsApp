@@ -119,10 +119,9 @@ namespace PromotionEventsApp.Services
                 {
                     Event = _mapper.Map<Event, EventViewModel>(element.Event),
                     User = user,
-                   // UserSpots = 
                 };
 
-             //   el.Event.Spots = await .EventSpots(element.EventId);
+         
 
 
                 result.Add(el);
