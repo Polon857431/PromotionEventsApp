@@ -89,5 +89,10 @@ namespace PromotionEventsApp.Services
         {
             return await _spotRepository.GetAsync(id);
         }
+
+        public async Task Create(SpotViewModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
