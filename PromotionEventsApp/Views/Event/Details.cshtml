@@ -5,7 +5,6 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="container">
     <div class="card shadow" style="width: 100%;">
         <div class="card-header">
@@ -54,10 +53,9 @@
                     <h5>@Model.EndTime.ToShortDateString()</h5>
                 </div>
             </div>
-            <hr/>
+            <hr />
             @if (User.Identity.IsAuthenticated)
             {
-               
                 <div class=" row">
                     <div class="col text-right">
                         @if (Model.Members.All(_ => _.UserName != User.Identity.Name))
@@ -67,11 +65,10 @@
                         else
                         {
                             <a asp-action="JoinToEvent" asp-route-eventId="@Model.Id" class="btn btn-outline-danger"> Opusc wydarzenie <i class="fas fa-user-times"></i> </a>
-
                         }
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <p></p>
             }
             <div class="form-group row">
@@ -110,30 +107,7 @@
                     </div>
                 </div>
             </div>
-
-
             <hr />
-
         </div>
-
     </div>
 </div>
-
-
-@*@section a{
-    <script>
-        function JoinToEvent(id) {
-            $.ajax({
-                url: '/Event/JoinToEvent' + id,
-                type: "POST",
-                success: function(response) {
-                    if (success === true) {
-                        console.log('test');
-
-                    }
-                });
-        }
-
-
-    </script>
-    }*@
