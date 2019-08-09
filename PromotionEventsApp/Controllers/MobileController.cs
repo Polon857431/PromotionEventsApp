@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PromotionEventsApp.Extensions;
+using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 
@@ -16,10 +19,15 @@ namespace PromotionEventsApp.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IMobileService _mobileService;
+        private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public MobileController(ITokenService tokenService)
+        public MobileController(ITokenService tokenService, IMobileService mobileService, UserManager<User> userManager, IHttpContextAccessor contextAccessor)
         {
             _tokenService = tokenService;
+            _mobileService = mobileService;
+            _userManager = userManager;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: api/Mobile
@@ -33,6 +41,8 @@ namespace PromotionEventsApp.Controllers
         [HttpGet("/checkCode/{code}")]
         public async Task<IActionResult> CheckCode(string code)
         {
+            var user = await _userManager.FindByIdAsync(_contextAccessor.GetUserId().ToString());
+            await _mobileService.CheckCode(code, user);
             return Ok();
         }
 
