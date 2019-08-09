@@ -149,7 +149,7 @@ namespace PromotionEventsApp
 
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
             app.UseSession();
 
             app.Use(async (context, next) =>

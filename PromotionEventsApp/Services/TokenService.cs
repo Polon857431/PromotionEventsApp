@@ -23,7 +23,7 @@ namespace PromotionEventsApp.Services
         {
             _userManager = userManager;
             _jwtConfiguration = jwtConfiguration.Value;
-            ;
+            
         }
 
         public string GenerateToken(List<Claim> claims)

@@ -59,9 +59,6 @@ namespace PromotionEventsApp.Controllers
                     return RedirectToAction("Index", "Home");
 
 
-
-
-
                 }
 
 
