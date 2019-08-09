@@ -15,6 +15,7 @@ namespace PromotionEventsApp.Controllers
     public class MobileController : Controller
     {
         private readonly ITokenService _tokenService;
+        private readonly IMobileService _mobileService;
 
         public MobileController(ITokenService tokenService)
         {
@@ -29,7 +30,7 @@ namespace PromotionEventsApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("{code}")]
+        [HttpGet("/checkCode/{code}")]
         public async Task<IActionResult> CheckCode(string code)
         {
             return Ok();

@@ -119,13 +119,14 @@ namespace PromotionEventsApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IMobileService, MobileService>();
+
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-            //services.AddScoped<IEventRepository, EventRepository>();
         }
 
 
