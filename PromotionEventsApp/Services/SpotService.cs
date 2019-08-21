@@ -104,6 +104,8 @@ namespace PromotionEventsApp.Services
             
         }
 
+        public async Task<List<Spot>> GetAllSpots() => (await _spotRepository.GetAllAsync()).ToList();
+
         public string UploadSpotPhoto(IFormFile formFile, int spotId)
         {
             string newPath = Path.Combine(_hostingEnvironment.WebRootPath, "Spots", spotId.ToString());
