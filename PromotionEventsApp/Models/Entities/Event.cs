@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PromotionEventsApp.Models
+namespace PromotionEventsApp.Models.Entities
 {
     public class Event
     {  

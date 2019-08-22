@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace PromotionEventsApp.Models
+namespace PromotionEventsApp.Models.Entities
 {
     public class User : IdentityUser<int>
     {
