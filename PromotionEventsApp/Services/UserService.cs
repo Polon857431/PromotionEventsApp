@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Services

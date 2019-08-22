@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PromotionEventsApp.Models.Entities;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PromotionEventsApp.Services

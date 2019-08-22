@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -8,6 +10,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Repositories.Abstract;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
@@ -30,12 +33,12 @@ namespace PromotionEventsApp.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task AddSpot(SpotViewModel model)
+        public async Task AddSpot(CreateSpotViewModel model)
         {
-            var s = _mapper.Map<SpotViewModel, Spot>(model);
-            s.Id = _spotRepository.GetLastId() + 1;
-            _spotRepository.Add(s);
-            await _spotRepository.CommitAsync();
+            //var s = _mapper.Map<SpotViewModel, Spot>(model);
+            //s.Id = _spotRepository.GetLastId() + 1;
+            //_spotRepository.Add(s);
+            //await _spotRepository.CommitAsync();
         }
 
         public async Task UpdateSpot(SpotViewModel model)
@@ -95,13 +98,29 @@ namespace PromotionEventsApp.Services
             return await _spotRepository.GetAsync(id);
         }
 
-        public async Task Create(SpotViewModel model)
+
+        public async Task Create(CreateSpotViewModel model)
         {
-            var spot = _mapper.Map<Spot>(model);
+            //var spot = _mapper.Map<Spot>(model);
+            var coords = GetCoords(model.Coords);
+            var spot = new Spot
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Latitude = coords.Latitude,
+                Longitude = coords.Longitude
+            };
+
             _spotRepository.Add(spot);
+
             await _spotRepository.CommitAsync();
-            
-            
+            spot.Image = UploadSpotPhoto(model.SpotImage, spot.Id);
+            _spotRepository.Update(spot);
+            await _spotRepository.CommitAsync();
+
+
+
+
         }
 
         public async Task<List<Spot>> GetAllSpots() => (await _spotRepository.GetAllAsync()).ToList();
@@ -112,17 +131,34 @@ namespace PromotionEventsApp.Services
             if (!Directory.Exists(newPath))
                 Directory.CreateDirectory(newPath);
 
+            if (!formFile.ContentType.Contains("image"))
+            {
+                throw new Exception("Tylko obrazy");
+            }
             FileInfo uploadedFileInfo = new FileInfo(formFile.FileName);
             var fileName = $"{Guid.NewGuid()}{uploadedFileInfo.Extension}";
             using (var stream = new FileStream(Path.Combine(newPath, fileName), FileMode.Create))
             {
                 formFile.CopyTo(stream);
-
             }
 
             return fileName;
 
 
+        }
+
+        private Coords GetCoords(string coordinates)
+        {
+            coordinates = coordinates.Replace("(", "");
+            coordinates = coordinates.Replace(")", "");
+
+            var latlng = coordinates.Split(",") ?? throw new ArgumentNullException(nameof(coordinates));
+
+            return new Coords
+            {
+                Latitude = Convert.ToDouble(latlng[0], CultureInfo.InvariantCulture.NumberFormat),
+                Longitude = Convert.ToDouble(latlng[1], CultureInfo.InvariantCulture.NumberFormat)
+            };
         }
     }
 }
