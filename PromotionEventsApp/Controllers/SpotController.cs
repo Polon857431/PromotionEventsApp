@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Dependency;
+using Npgsql.PostgresTypes;
 using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
 using PromotionEventsApp.Services.Abstract;
@@ -30,7 +32,7 @@ namespace PromotionEventsApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var spot = await _spotService.GetSpot(id);
-            ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(QrGenerator.GetCode(spot.Id+"_"+spot.Name,20));
+            ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(QrGenerator.GetCode(spot.Id + "_" + spot.Name, 20));
             return View(spot);
         }
 
@@ -38,16 +40,26 @@ namespace PromotionEventsApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            
+
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Map() => View(await _spotService.GetAllSpots());
+
         // POST: Spot/Create
-        [HttpPost]
-        public async Task<IActionResult> Create(SpotViewModel model)
+        [HttpPost("Spot/Create")]
+        public async Task<IActionResult> Create([FromForm]CreateSpotViewModel model)
         {
-            await _spotService.Create(model);
-            return View();
+            try
+            {
+                await _spotService.Create(model);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+            return Ok();
         }
 
         // GET: Spot/Edit/5
