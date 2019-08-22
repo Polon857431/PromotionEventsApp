@@ -1,0 +1,56 @@
+﻿@model System.Collections.Generic.List<PromotionEventsApp.Models.Entities.Spot>
+
+@{
+    ViewData["Title"] = "Mapa";
+    Layout = "_Layout";
+}
+
+    <div class="card shadow" style="width: 100%;">
+        <div class="card-header">
+            <h3><i class="fas fa-map-marked-alt"></i> @ViewData["Title"]</h3>
+        </div>
+        <div class="card-body">
+            <div id="map"></div>
+        </div>
+    </div>
+
+@section Scripts
+{
+    <script>
+        var spotCoords;
+        var myLatlng = { lat: 52.1334952, lng: 22.4939054 };
+
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 52.1607742, lng: 22.2290208 },
+                zoom: 8
+
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                $("#addSpotModal").modal()
+                spotCoords = event.latLng;
+                new google.maps.Marker({ position: event.latLng, map: map })
+            });
+
+
+        }
+        function addPoint(){
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const file = document.getElementById('file').value;
+            console.log('name:'+name);
+            console.log('description:'+description);
+            console.log('file:'+file);
+            console.log('spotCoords:'+spotCoords);
+
+
+        }
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+}

@@ -1,58 +1,146 @@
-﻿@model PromotionEventsApp.ViewModels.SpotViewModel
+﻿
 @{
     ViewData["Title"] = "Create";
-}
+}<div class="modal" id="addSpotModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name" class="col-form-label">Nazwa</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-form-label">Opis</label>
+                    <textarea class="form-control" id="description"></textarea>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Wybierz zdjecie</label>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="test" type="button" onclick="addPoint()" class="btn btn-success" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container d-flex justify-content-center">
     <div class="card" style="width: 100%;">
         <div class="card-header">
             <h1> <i class="fas fa-plus"></i> @ViewData["Title"]</h1>
         </div>
         <div class="card-body">
-            <form asp-action="Create" asp-controller="Spot" method="post">
-
-                <div class="form-group row">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label" asp-for="Name"></label>
-                    <div class="col-sm-9">
-                        <input asp-for="Name" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label" asp-for="Description"></label>
-                    <div class="col-sm-9">
-                        <textarea asp-for="Description" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label" asp-for="Latitude"></label>
-                    <div class="col-sm-9">
-                        <input type="number" step="any" asp-for="Latitude" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label" asp-for="Longitude"></label>
-                    <div class="col-sm-9">
-                        <input type="number" step="any" asp-for="Longitude" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group row ">
-                    <label class="col-sm-3 col-form-label" asp-for="SpotImage"></label>
-                    <div class="col-sm-9">
-                        <input type="file" asp-for="SpotImage" class="form-control-file" accept="image/*">
-                    </div>
-                </div>
-                <p></p>
-                <div class="row">
-                    <div class="col text-right">
-                        <input class="btn btn-outline-success" type="submit" value="Create Spot" />
-                    </div>
-                </div>
-
-
-
-            </form>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+               Aby dodać spot kliknj w opdoiwednie miejsce na mpie
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="map"></div>
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    <script>
+
+  
+
+        var spotCoords;
+      
+
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 52.1607742, lng: 22.2290208 },
+                zoom: 8
+
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+               // var btn = document.getElementById('test');
+                //btn.onclick = () => {
+                //    var name = document.getElementById('name').value;
+                //    var description = document.getElementById('description').value;
+                //    var file = document.getElementById('file').value;
+                //    console.log(`name:${name}`);
+                //    console.log('description:'+description);
+                //    console.log('file:'+file);
+                //    console.log('spotCoords:' + spotCoords);
+
+                //    const data = {
+                //        Name: name,
+                //        Description: description,
+                //        SpotImage: file,
+                //        Coords: spotCoords
+                //    };
+                //    console.log(data);
+                //}
+                $("#addSpotModal").modal();
+                spotCoords = event.latLng;
+                new google.maps.Marker({ position: event.latLng, map: map })
+            });
+
+
+    }
+
+        function addPoint(){
+            var name = document.getElementById('name').value;
+            var description = document.getElementById('description').value;
+            var file = document.getElementById('customFile');
+            console.log(`name:${name}`);
+            console.log('description:'+description);
+            console.log('file:'+file.files[0]);
+            console.log('spotCoords:' + spotCoords);
+
+            var x = new FormData();
+            x.append('Name', name);
+            x.append('Description', description);
+            x.append('SpotImage', file.files[0]);
+            x.append('Coords', spotCoords);
+
+            //{
+            //    "Name": "string",
+            //        "Description": "string",
+            //        "FormFile": "string",
+            //        "Coords": "string"
+            //}
+            console.log(x);
+            fetch('Create', {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, cors, *same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    'Accept': 'application/json'
+                    //'Content-Type': "multipart/form-data"
+
+
+                }, body: x
+
+            // body data type must match "Content-Type" header
+        });
+
+
+        }
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+
+}
