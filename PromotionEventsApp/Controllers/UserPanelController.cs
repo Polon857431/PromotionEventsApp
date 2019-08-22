@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using PromotionEventsApp.Extensions;
 using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 

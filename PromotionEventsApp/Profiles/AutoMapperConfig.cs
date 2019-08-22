@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.ViewModels;
 
 namespace PromotionEventsApp.Profiles
@@ -46,6 +47,7 @@ namespace PromotionEventsApp.Profiles
                 .ForMember(_ => _.Description, __ => __.MapFrom(___ => ___.Description))
                 .ForMember(_ => _.Latitude, __ => __.MapFrom(___ => ___.Latitude))
                 .ForMember(_ => _.Longitude, __ => __.MapFrom(___ => ___.Longitude))
+               // .ForMember(_ => _.Coords, __ => __.MapFrom(___ => ___.Coords))
                 .ForMember(_ => _.QrCode, __ => __.MapFrom(___ => ___.QrCode));
         }
     }
@@ -59,6 +61,7 @@ namespace PromotionEventsApp.Profiles
                 .ForMember(_ => _.Description, __ => __.MapFrom(___ => ___.Description))
                 .ForMember(_ => _.Latitude, __ => __.MapFrom(___ => ___.Latitude))
                 .ForMember(_ => _.Longitude, __ => __.MapFrom(___ => ___.Longitude))
+                //.ForMember(_ => _.Coords, __ => __.MapFrom(___ => ___.Coords))
                 .ForMember(_ => _.QrCode, __ => __.MapFrom(___ => ___.QrCode));
         }
     }

@@ -5,6 +5,7 @@ using PromotionEventsApp.Models;
 using PromotionEventsApp.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Services.Abstract;
 
 namespace PromotionEventsApp.Controllers

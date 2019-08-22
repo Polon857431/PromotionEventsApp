@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.Repositories.Abstract
 {

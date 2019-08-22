@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using PromotionEventsApp.Models;
-using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.ViewModels
 {
-    public class SpotViewModel
+    public class CreateSpotViewModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string QrCode { get; set; }
-        public string Longitude { get; set; }
-        public string Latitude { get; set; }
-        public List<Event> Events { get; set; }
         public IFormFile SpotImage { get; set; }
         public string Coords { get; set; }
+
+    }
+    public class FormFileWrapper
+    {
+        public IFormFile File { get; set; }
     }
 }

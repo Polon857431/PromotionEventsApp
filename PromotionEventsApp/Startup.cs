@@ -27,6 +27,7 @@ using System.Text;
 using PromotionEventsApp.Helpers;
 using Microsoft.OpenApi.Models;
 using PromotionEventsApp.DAL.Initializers;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp
 {
