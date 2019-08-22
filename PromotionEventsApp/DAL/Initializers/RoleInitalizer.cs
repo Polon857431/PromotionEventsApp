@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.DAL.Initializers
 {

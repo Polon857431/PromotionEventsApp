@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.DAL.Initializers
 {
