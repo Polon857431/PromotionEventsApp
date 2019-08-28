@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Installers\ServicesInstaller.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Event\Edit.cshtml" />
   </ItemGroup>
 
@@ -43,6 +47,7 @@
 
 
   <ItemGroup>
+    <None Include="Installers\ServicesInstaller.cs" />
     <None Include="Views\Event\Edit.cshtml" />
   </ItemGroup>
 
