@@ -71,24 +71,7 @@
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
-               // var btn = document.getElementById('test');
-                //btn.onclick = () => {
-                //    var name = document.getElementById('name').value;
-                //    var description = document.getElementById('description').value;
-                //    var file = document.getElementById('file').value;
-                //    console.log(`name:${name}`);
-                //    console.log('description:'+description);
-                //    console.log('file:'+file);
-                //    console.log('spotCoords:' + spotCoords);
 
-                //    const data = {
-                //        Name: name,
-                //        Description: description,
-                //        SpotImage: file,
-                //        Coords: spotCoords
-                //    };
-                //    console.log(data);
-                //}
                 $("#addSpotModal").modal();
                 spotCoords = event.latLng;
                 new google.maps.Marker({ position: event.latLng, map: map })
@@ -98,40 +81,28 @@
     }
 
         function addPoint(){
-            var name = document.getElementById('name').value;
-            var description = document.getElementById('description').value;
-            var file = document.getElementById('customFile');
-            console.log(`name:${name}`);
-            console.log('description:'+description);
-            console.log('file:'+file.files[0]);
-            console.log('spotCoords:' + spotCoords);
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const file = document.getElementById('customFile');
 
-            var x = new FormData();
+
+            const x = new FormData();
             x.append('Name', name);
             x.append('Description', description);
             x.append('SpotImage', file.files[0]);
             x.append('Coords', spotCoords);
 
-            //{
-            //    "Name": "string",
-            //        "Description": "string",
-            //        "FormFile": "string",
-            //        "Coords": "string"
-            //}
             console.log(x);
             fetch('Create', {
-                method: "POST", // *GET, POST, PUT, DELETE, etc.
-                mode: "cors", // no-cors, cors, *same-origin
-                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: "same-origin", // include, *same-origin, omit
+                method: "POST", 
+                mode: "cors", 
+                cache: "no-cache", 
+                credentials: "same-origin", 
                 headers: {
                     'Accept': 'application/json'
-                    //'Content-Type': "multipart/form-data"
-
 
                 }, body: x
 
-            // body data type must match "Content-Type" header
         });
 
 

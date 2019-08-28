@@ -37,36 +37,23 @@ namespace PromotionEventsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
             {
-                User user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
+                ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
 
-                    return View(model);
-                }
-                if (!await _tokenService.CheckUserPassword(user, model.Password))
-                {
-                    ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
+                return View(model);
+            }
+            if (!await _tokenService.CheckUserPassword(user, model.Password))
+            {
+                ModelState.AddModelError(nameof(model.Email), "Nieprawidłowa nazwa użytkownika lub hasło.");
 
-                    return View(model);
-                }
-                else
-                {
-
-                    HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(await _tokenService.GetUserClaims(user)));
-                    return RedirectToAction("Index", "Home");
-
-
-                }
-
-
-
+                return View(model);
             }
 
-            return View();
+            HttpContext.Session.SetString("JWToken", _tokenService.GenerateToken(await _tokenService.GetUserClaims(user)));
+            return RedirectToAction("Index", "Home");
 
         }
 
@@ -83,11 +70,10 @@ namespace PromotionEventsApp.Controllers
         #endregion
 
         #region Register
+
         [AllowAnonymous]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
+       
 
         [HttpPost]
         [AllowAnonymous]
@@ -105,7 +91,7 @@ namespace PromotionEventsApp.Controllers
                 return View(model);
             }
 
-            User user = new User
+            var user = new User
             {
                 Email = model.Email,
                 FirstName = model.FirstName,
@@ -114,7 +100,7 @@ namespace PromotionEventsApp.Controllers
                 EmailConfirmed = true
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 if (!await _roleManager.RoleExistsAsync("User"))
@@ -127,7 +113,7 @@ namespace PromotionEventsApp.Controllers
             }
             else
             {
-                foreach (IdentityError error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
