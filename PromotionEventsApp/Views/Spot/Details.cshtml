@@ -1,0 +1,62 @@
+﻿@model PromotionEventsApp.Models.Entities.Spot
+
+@{
+    ViewData["Title"] = "Szczegóły";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card shadow" style="width: 100%;">
+        <div class="card-header">
+            <h1>
+                <i class="fas fa-info-circle"></i> @ViewData["Title"]
+            </h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5>
+                        <strong>Nazwa</strong>
+                    </h5>
+                </div>
+                <div class="col-sm-6">
+                    <h5>@Model.Name</h5>
+                </div>
+            </div>
+            <div class=" row">
+                <div class="col-sm-4">
+                    <h5>
+                        <strong>Opis</strong>
+                    </h5>
+                </div>
+                <div class="col-sm-6">
+                    <h5>@Model.Description</h5>
+                </div>
+
+            </div>
+            <hr />
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="row">
+                    <div class="col">
+                        <h5>
+                            <b><i class="fas fa-qrcode"></i> QR Code</b>
+                            <a class="float-right" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseQRCode" aria-expanded="false">
+                                Pokaż / Ukryj
+                                <i class="fas fa-chevron-circle-down expand_caret"></i>
+                            </a>
+                        </h5>
+                        <div class="collapse" id="collapseQRCode">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <img class="img-fluid" src="@ViewBag.QRCodeImage" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <hr/>
+</div>
+

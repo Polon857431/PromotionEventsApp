@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.DAL
 {

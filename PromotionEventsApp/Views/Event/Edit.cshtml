@@ -1,0 +1,61 @@
+﻿@model PromotionEventsApp.ViewModels.EventViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container d-flex justify-content-center">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h1> <i class="fas fa-plus"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" asp-controller="Event" method="post">
+
+                <div class="form-group row">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" asp-for="Name"></label>
+                    <div class="col-sm-9">
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" asp-for="Description"></label>
+                    <div class="col-sm-9">
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" asp-for="StartTime"></label>
+                    <div class="col-sm-9">
+                        <input type="date" asp-for="StartTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" asp-for="EndTime"></label>
+                    <div class="col-sm-9">
+                        <input type="date" asp-for="EndTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" asp-for="EventImage"></label>
+                    <div class="col-sm-9">
+                        <input type="file" asp-for="EventImage" class="form-control-file" accept="image/*">
+                    </div>
+                </div>
+                <p></p>
+                <div class="row">
+                    <div class="col text-right">
+                        <input class="btn btn-outline-success" type="submit" value="Create Event" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

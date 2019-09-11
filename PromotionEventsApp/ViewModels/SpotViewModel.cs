@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp.ViewModels
 {
@@ -12,8 +14,10 @@ namespace PromotionEventsApp.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public string QrCode { get; set; }
-        public float Longitude { get; set; }
-        public float Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
         public List<Event> Events { get; set; }
+        public IFormFile SpotImage { get; set; }
+        public string Coords { get; set; }
     }
 }

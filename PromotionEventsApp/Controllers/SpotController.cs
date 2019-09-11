@@ -4,11 +4,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Dependency;
+using Npgsql.PostgresTypes;
+using PromotionEventsApp.Helpers;
+using PromotionEventsApp.Models;
+using PromotionEventsApp.Services.Abstract;
+using PromotionEventsApp.ViewModels;
 
 namespace PromotionEventsApp.Controllers
 {
     public class SpotController : Controller
     {
+        private readonly ISpotService _spotService;
+
+        public SpotController(ISpotService spotService)
+        {
+            _spotService = spotService;
+        }
+
         // GET: Spot
         public ActionResult Index()
         {
@@ -16,32 +29,37 @@ namespace PromotionEventsApp.Controllers
         }
 
         // GET: Spot/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var spot = await _spotService.GetSpot(id);
+            ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(QrGenerator.GetCode(spot.Id + "_" + spot.Name, 20));
+            return View(spot);
         }
 
         // GET: Spot/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Create()
         {
+
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Map() => View(await _spotService.GetAllSpots());
+
         // POST: Spot/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPost("Spot/Create")]
+        public async Task<IActionResult> Create([FromForm]CreateSpotViewModel model)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                await _spotService.Create(model);
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                return BadRequest(e);
             }
+            return Ok();
         }
 
         // GET: Spot/Edit/5

@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PromotionEventsApp.Models.Entities;
 using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace PromotionEventsApp.Services
@@ -21,14 +22,15 @@ namespace PromotionEventsApp.Services
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ISpotRepository _spotRepository;
+        private readonly IMemberRepository _memberRepository;
 
-        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotRepository spotRepository)
+        public EventService(IEventRepository eventRepository, IMapper mapper, IHostingEnvironment hostingEnvironment, ISpotRepository spotRepository, IMemberRepository memberRepository)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
             _spotRepository = spotRepository;
-           
+            _memberRepository = memberRepository;
         }
 
         public async Task CreateEvent(EventViewModel model)
@@ -48,7 +50,10 @@ namespace PromotionEventsApp.Services
         public async Task<EventViewModel> GetEventViewModel(int id)
         {
             var e = await _eventRepository.GetAsync(id);
-            return _mapper.Map<Event, EventViewModel>(e);
+
+            var result = _mapper.Map<Event, EventViewModel>(e);
+            result.Members = await EventMembers(id);
+            return result;
         }
 
         public async Task<Event> GetEvent(int id)
@@ -115,10 +120,9 @@ namespace PromotionEventsApp.Services
                 {
                     Event = _mapper.Map<Event, EventViewModel>(element.Event),
                     User = user,
-                   // UserSpots = 
                 };
 
-             //   el.Event.Spots = await .EventSpots(element.EventId);
+         
 
 
                 result.Add(el);
@@ -155,9 +159,8 @@ namespace PromotionEventsApp.Services
         public async Task JoinToEvent(int eventId, User user)
         {
             var e = await _eventRepository.GetAsync(eventId);
-            e.Members.Add(new Member() { Event = e, User = user });
-            _eventRepository.Update(e);
-            await _eventRepository.CommitAsync();
+            _memberRepository.Add(new Member() { Event = e, User = user });
+            await _memberRepository.CommitAsync();
         }
 
         public async Task LeaveEvent(int eventId, User user)

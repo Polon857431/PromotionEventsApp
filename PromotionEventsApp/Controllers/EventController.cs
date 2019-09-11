@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PromotionEventsApp.Extensions;
 using PromotionEventsApp.Helpers;
 using PromotionEventsApp.Models;
+using PromotionEventsApp.Models.Entities;
 using PromotionEventsApp.Services.Abstract;
 using PromotionEventsApp.ViewModels;
 
@@ -16,20 +20,25 @@ namespace PromotionEventsApp.Controllers
         private readonly IEventService _eventService;
         private readonly UserManager<User> _userManager;
         private readonly ISpotService _spotService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public EventController(IEventService eventService, UserManager<User> userManager, ISpotService spotService)
+        public EventController(IEventService eventService, UserManager<User> userManager, ISpotService spotService, IHttpContextAccessor httpContextAccessor)
         {
             _eventService = eventService;
             _userManager = userManager;
             _spotService = spotService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #region CreateEvent
         [HttpGet]
 
-        public IActionResult CreateEvent() => View(new EventViewModel());
+        public IActionResult CreateEvent()
+        {
 
+            return View(new EventViewModel());
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateEvent(EventViewModel model)
@@ -76,16 +85,19 @@ namespace PromotionEventsApp.Controllers
 
         #region Event Details
 
-        public async Task<IActionResult> Details(int id) =>
-            View(await _eventService.GetEventViewModel(id));
-
+        public async Task<IActionResult> Details(int id)
+        {
+            return View(await _eventService.GetEventViewModel(id));
+        }
 
         #endregion
         #region Edit
-
-        public async Task<IActionResult> Edit(int id) =>
-            View(await _eventService.GetEventViewModel(id));
-
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            return View(await _eventService.GetEventViewModel(id));
+        }
+        [HttpPost]
         public async Task<IActionResult> Edit(EventViewModel model)
         {
             if (!ModelState.IsValid)
@@ -107,14 +119,28 @@ namespace PromotionEventsApp.Controllers
 
         public async Task<IActionResult> JoinToEvent(int eventId)
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            await _eventService.JoinToEvent(eventId, user);
-            return Json(new { success = true });
+            var user = await _userManager.FindByIdAsync(_httpContextAccessor.GetUserId().ToString());
+            try
+            {
+                await _eventService.JoinToEvent(eventId, user);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.ToString());
+            }
+            return Ok("Test");
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddSpotToEvent(int eventId) =>
-            View(await _spotService.GetAddSpotToEventViewModel(eventId));
+        public async Task<IActionResult> AddSpotToEvent(int eventId)
+        {
+            return View(await _spotService.GetAddSpotToEventViewModel(eventId));
+        }
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-﻿namespace PromotionEventsApp.Models
+﻿namespace PromotionEventsApp.Models.Entities
 {
     public class EventSpot
     {

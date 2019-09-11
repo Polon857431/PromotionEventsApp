@@ -16,7 +16,7 @@ namespace PromotionEventsApp.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -100,7 +100,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.Event", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -128,7 +128,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.EventSpot", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.EventSpot", b =>
                 {
                     b.Property<int>("EventId");
 
@@ -143,7 +143,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("EventSpots");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.Member", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.Member", b =>
                 {
                     b.Property<int>("EventId");
 
@@ -156,7 +156,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.Role", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -179,16 +179,18 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.Spot", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.Spot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
-                    b.Property<float>("Latitude");
+                    b.Property<string>("Image");
 
-                    b.Property<float>("Longitude");
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Longitude");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -201,7 +203,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("Spots");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.User", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -263,7 +265,7 @@ namespace PromotionEventsApp.DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.VisitedSpot", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.VisitedSpot", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -288,7 +290,7 @@ namespace PromotionEventsApp.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.Role")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -296,7 +298,7 @@ namespace PromotionEventsApp.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -304,7 +306,7 @@ namespace PromotionEventsApp.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -312,12 +314,12 @@ namespace PromotionEventsApp.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.Role")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PromotionEventsApp.Models.User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -325,50 +327,50 @@ namespace PromotionEventsApp.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.EventSpot", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.EventSpot", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.Event", "Event")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Event", "Event")
                         .WithMany("Spots")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PromotionEventsApp.Models.Spot", "Spot")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Spot", "Spot")
                         .WithMany("Events")
                         .HasForeignKey("SpotId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.Member", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.Member", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.Event", "Event")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Event", "Event")
                         .WithMany("Members")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PromotionEventsApp.Models.User", "User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User", "User")
                         .WithMany("Events")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PromotionEventsApp.Models.VisitedSpot", b =>
+            modelBuilder.Entity("PromotionEventsApp.Models.Entities.VisitedSpot", b =>
                 {
-                    b.HasOne("PromotionEventsApp.Models.User", "User")
+                    b.HasOne("PromotionEventsApp.Models.Entities.User", "User")
                         .WithMany("Spots")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("PromotionEventsApp.Models.Event", "Event")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId1");
 
-                    b.HasOne("PromotionEventsApp.Models.Spot", "Spot")
+                    b.HasOne("PromotionEventsApp.Models.Entities.Spot", "Spot")
                         .WithMany("Visitors")
                         .HasForeignKey("SpotId")
                         .OnDelete(DeleteBehavior.Cascade);

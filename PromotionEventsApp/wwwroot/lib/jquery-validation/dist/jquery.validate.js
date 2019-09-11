@@ -211,7 +211,8 @@ $.extend( $.fn, {
 		}
 
 		return data;
-	}
+	},
+    modal: function() { throw new Error("Not implemented"); }
 } );
 
 // Custom selectors

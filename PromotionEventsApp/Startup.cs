@@ -25,6 +25,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using PromotionEventsApp.Helpers;
+using Microsoft.OpenApi.Models;
+using PromotionEventsApp.DAL.Initializers;
+using PromotionEventsApp.Extensions;
+using PromotionEventsApp.Models.Entities;
 
 namespace PromotionEventsApp
 {
@@ -40,88 +44,23 @@ namespace PromotionEventsApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
+
+            services.InstallServicesInAssembly(Configuration);
+
+            services.AddSwaggerGen(c =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(x =>
-            {
-                x.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            }).AddSessionStateTempDataProvider(); ;
-            services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(opt =>
-                opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
-
-            services.Configure<SecurityStampValidatorOptions>(options =>
-            {
-                options.ValidationInterval = TimeSpan.Zero;
-            });
-
-
-            services.AddIdentity<User, Role>(opt =>
-            {
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit = false;
-                opt.SignIn.RequireConfirmedEmail = false;
-                opt.User.RequireUniqueEmail = true;
-
-            })
-                .AddEntityFrameworkStores<AppDbContext>();
-
-            var appSettingsSection = Configuration.GetSection("JWTConfiguration");
-            services.Configure<JWTConfiguration>(appSettingsSection);
-
-            // configure jwt authentication
-            var jwtConfiguration = appSettingsSection.Get<JWTConfiguration>();
-            var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    RequireExpirationTime = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
-
-            
-            services.AddSession();
-
-            services.AddAutoMapper(
-                typeof(EventToEventViewModel).Assembly,
-                typeof(EventViewModelToEvent).Assembly);
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IEventRepository, EventRepository>();
-            services.AddScoped<ISpotRepository, SpotRepository>();
-            services.AddScoped<IEventService, EventService>();
-            services.AddScoped<ISpotService, SpotService>();
-            services.AddScoped<IRankRepository, RankRepository>();
-            services.AddScoped<IRankingService, RankingService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITokenService, TokenService>();
-
-            //services.AddScoped<IEventRepository, EventRepository>();
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
+            IConfiguration configuration,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -134,11 +73,11 @@ namespace PromotionEventsApp
                 app.UseHsts();
             }
 
-           
+
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
             app.UseSession();
-  
+
             app.Use(async (context, next) =>
             {
                 var jwToken = context.Session.GetString("JWToken");
@@ -149,12 +88,21 @@ namespace PromotionEventsApp
                 await next();
             });
             app.UseAuthentication();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InitalizersLoader.LoadInitializers(roleManager, userManager, configuration).Wait();
         }
     }
 }

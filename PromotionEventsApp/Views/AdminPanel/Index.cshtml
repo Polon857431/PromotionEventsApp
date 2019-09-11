@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Wydarzenia</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">Zarządzaj wydarzeniami</h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li><a class="card-link" asp-controller="Event" asp-action="CreateEvent"> Add Event</a></li>
+                    <li><a class="card-link" asp-controller="Event" asp-action="List">Event List</a></li>            
+                </ul>           
+            </div>
+        </div>
+    </div>
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Miejsca</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">Zarządzaj miejscami</h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li><a class="card-link" asp-controller="Spot" asp-action="Create"> Add Spot</a></li>
+                    <li><a class="card-link" asp-controller="spot" asp-action="List">Event List</a></li>            
+                </ul>           
+            </div>
+        </div>
+    </div>
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">System</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">Informacje</h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>Liczba użytkowników</li>
+                    <li>Liczba wydarzen</li>
+                    <li>Liczba Lokalizacji</li>
+                </ul>           
+            </div>
+        </div>
+    </div>
+</div>
