@@ -28,11 +28,8 @@ namespace PromotionEventsApp.Controllers
         #region CreateEvent
         [HttpGet]
 
-        public IActionResult CreateEvent()
-        {
+        public IActionResult CreateEvent() => View(new EventViewModel());
 
-            return View(new EventViewModel());
-        }
 
         [HttpPost]
         public async Task<IActionResult> CreateEvent(EventViewModel model)
@@ -79,18 +76,16 @@ namespace PromotionEventsApp.Controllers
 
         #region Event Details
 
-        public async Task<IActionResult> Details(int id)
-        {
-            return View(await _eventService.GetEventViewModel(id));
-        }
+        public async Task<IActionResult> Details(int id) =>
+            View(await _eventService.GetEventViewModel(id));
+
 
         #endregion
         #region Edit
 
-        public async Task<IActionResult> Edit(int id)
-        {
-            return View(await _eventService.GetEventViewModel(id));
-        }
+        public async Task<IActionResult> Edit(int id) =>
+            View(await _eventService.GetEventViewModel(id));
+
         public async Task<IActionResult> Edit(EventViewModel model)
         {
             if (!ModelState.IsValid)
@@ -118,14 +113,8 @@ namespace PromotionEventsApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddSpotToEvent(int eventId)
-        {
-            return View(await _spotService.GetAddSpotToEventViewModel(eventId));
-        }
-
-
-
-
+        public async Task<IActionResult> AddSpotToEvent(int eventId) =>
+            View(await _spotService.GetAddSpotToEventViewModel(eventId));
 
 
 
