@@ -85,18 +85,16 @@ namespace PromotionEventsApp.Controllers
 
         #region Event Details
 
-        public async Task<IActionResult> Details(int id)
-        {
-            return View(await _eventService.GetEventViewModel(id));
-        }
+        public async Task<IActionResult> Details(int id) =>
+            View(await _eventService.GetEventViewModel(id));
+
 
         #endregion
         #region Edit
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            return View(await _eventService.GetEventViewModel(id));
-        }
+        public async Task<IActionResult> Edit(int id) =>
+            View(await _eventService.GetEventViewModel(id));
+
         [HttpPost]
         public async Task<IActionResult> Edit(EventViewModel model)
         {
@@ -110,11 +108,9 @@ namespace PromotionEventsApp.Controllers
         }
         #endregion
         #region List
-        public async Task<IActionResult> List()
-        {
-            var e = await _eventService.List();
-            return View(await _eventService.List());
-        }
+        public async Task<IActionResult> List() => 
+            View(await _eventService.List());
+
         #endregion
 
         public async Task<IActionResult> JoinToEvent(int eventId)
@@ -124,25 +120,16 @@ namespace PromotionEventsApp.Controllers
             {
                 await _eventService.JoinToEvent(eventId, user);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Console.WriteLine(e);
                 return BadRequest(e.ToString());
             }
             return Ok("Test");
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddSpotToEvent(int eventId)
-        {
-            return View(await _spotService.GetAddSpotToEventViewModel(eventId));
-        }
-
-
-
-
-
-
+        public async Task<IActionResult> AddSpotToEvent(int eventId) =>
+            View(await _spotService.GetAddSpotToEventViewModel(eventId));
 
     }
 

@@ -16,13 +16,11 @@ namespace PromotionEventsApp.Controllers
             _rankingService = rankingService;
         }
 
-        public async Task<IActionResult> Ranking()
-        {
-            return View(await _rankingService.GlobalRanking());
-        }
-        public async Task<IActionResult> EventRanking(int eventId)
-        {
-            return View(await _rankingService.EventRank(eventId));
-        }
+        public async Task<IActionResult> Ranking() =>
+            View(await _rankingService.GlobalRanking());
+
+        public async Task<IActionResult> EventRanking(int eventId) => 
+            View(await _rankingService.EventRank(eventId));
+
     }
 }
